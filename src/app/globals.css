@@ -1,26 +1,134 @@
+/* --- Tailwind core --- */
 @import "tailwindcss";
 
+/* --- Fonts (Google) --- */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;600;700&family=Zen+Old+Mincho:wght@400;500;600;700&family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap');
+
+/* --- Design tokens (CSS variables) --- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #060606;
+  --foreground: #F5F5F5;
+
+  --japanese-red: #5a0012;
+  --japanese-crimson: #B22222;
+  --japanese-gold: #FFD700;
+  --japanese-black: #030303;
+  --japanese-white: #F5F5F5;
+  --japanese-gray: #1A1A1A;
+  --japanese-dark-gray: #0A0A0A;
 }
 
+/* --- Tailwind v4 tokens (@theme) --- */
 @theme inline {
+  /* colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-japanese-red: var(--japanese-red);
+  --color-japanese-crimson: var(--japanese-crimson);
+  --color-japanese-gold: var(--japanese-gold);
+  --color-japanese-black: var(--japanese-black);
+  --color-japanese-white: var(--japanese-white);
+  --color-japanese-gray: var(--japanese-gray);
+  --color-japanese-dark-gray: var(--japanese-dark-gray);
+
+  /* fonts */
+  --font-japanese: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+  --font-serif-japanese: 'Zen Old Mincho', 'Noto Serif JP', serif;
+  --font-brush: 'Zen Old Mincho', serif;
+  --font-maru: 'Zen Maru Gothic', sans-serif;
+  --font-mincho: var(--font-shippori, 'Noto Serif JP'), serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* --- Base resets --- */
+/* * {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+} */
+
+*, *::before, *::after { box-sizing: border-box }
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: var(--font-maru);
+  line-height: 1.6;
+  overflow-x: hidden;
 }
+
+/* --- Scrollbar (webkit) --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--japanese-dark-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--japanese-red);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--japanese-crimson);
+}
+
+/* --- Smooth scroll utility --- */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
+@keyframes slideUp {
+  0% { transform: translateY(20px); opacity: 0 }
+  100% { transform: translateY(0); opacity: 1 }
+}
+
+@keyframes slideDown {
+  0% { transform: translateY(-20px); opacity: 0 }
+  100% { transform: translateY(0); opacity: 1 }
+}
+
+@keyframes scaleIn {
+  0% { transform: scale(0.9); opacity: 0 }
+  100% { transform: scale(1); opacity: 1 }
+}
+
+/* Utility classes for animations */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out both;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out both;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease-out both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out both;
+}
+
+/* --- Reduced motion accessibility --- */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-slide-down,
+  .animate-scale-in {
+    animation: none !important;
+  }
+}
+
+
