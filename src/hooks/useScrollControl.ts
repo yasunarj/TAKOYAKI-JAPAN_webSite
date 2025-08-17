@@ -7,6 +7,8 @@ const EDGE_WHEEL_THRESHOLD = 320;
 const SWIPE_THRESHOLD = 120;
 const COOLDOWN_MS = 1000;
 
+const clamp = (n: number, total: number) => Math.max(0, Math.min(n, total - 1));
+
 export const useScrollControl = (totalSections: number, enabled = true) => {
   const [currentSection, setCurrentSection] = useState(0);
 
@@ -21,22 +23,47 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
   // 👇 Hookはトップレベルで宣言！
   const touchStartY = useRef<number | null>(null);
   const lastSwitchAt = useRef(0);
-  const edgeIntent = useRef<{ index: number | null; dir: "up" | "down" | null; acc: number }>({
+  const edgeIntent = useRef<{
+    index: number | null;
+    dir: "up" | "down" | null;
+    acc: number;
+  }>({
     index: null,
     dir: null,
     acc: 0,
   });
 
-  const clamp = (n: number) => Math.max(0, Math.min(n, totalSections - 1));
-
   const goToSection = useCallback(
-    (index: number) => setCurrentSection(clamp(index)),
+    (index: number) => {
+      const i = clamp(index, totalSections);
+      const el = containersRef.current[i];
+      if (el) {
+        el.scrollTop = 0;
+        el.scrollTo({ top: 0, behavior: "auto" })
+      }
+      setCurrentSection(i);
+    },
     [totalSections]
   );
 
+  const currentIndexRef = useRef(0);
+  useEffect(() => {
+    currentIndexRef.current = currentSection;
+  }, [currentSection])
+
   const moveSection = useCallback(
-    (dir: "up" | "down") =>
-      setCurrentSection((prev) => clamp(prev + (dir === "down" ? 1 : -1))),
+    (dir: "up" | "down") => {
+      const prev = currentIndexRef.current;
+      const next = clamp(prev + (dir === "down" ? 1 : -1), totalSections);
+
+      const target = containersRef.current[next];
+      if(target) {
+        target.scrollTop = 0
+        target.scrollTo({ top: 0, behavior: "auto" });
+      }
+
+      setCurrentSection(next);
+    },
     [totalSections]
   );
 
@@ -73,7 +100,8 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
         e.preventDefault();
         if (inCooldown()) return;
         const same =
-          edgeIntent.current.index === index && edgeIntent.current.dir === "down";
+          edgeIntent.current.index === index &&
+          edgeIntent.current.dir === "down";
         edgeIntent.current = {
           index,
           dir: "down",
@@ -100,7 +128,7 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
       }
     };
 
-    const onTouchStart = (_index: number) => (e: TouchEvent) => {
+    const onTouchStart = () => (e: TouchEvent) => {
       touchStartY.current = e.touches[0].clientY;
     };
 
@@ -133,7 +161,7 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
     containersRef.current.forEach((el, index) => {
       if (!el) return;
       const wheel = onWheel(index);
-      const ts = onTouchStart(index);
+      const ts = onTouchStart();
       const tm = onTouchMove(index);
       el.addEventListener("wheel", wheel, { passive: false });
       el.addEventListener("touchstart", ts, { passive: true });
