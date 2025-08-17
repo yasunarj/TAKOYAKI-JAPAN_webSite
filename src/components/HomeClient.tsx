@@ -11,14 +11,14 @@ import MenuSection from "@/components/MenuSection";
 import AccessSection from "@/components/AccessSection";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import { useScrollControl } from "@/hooks/useScrollControl";
-import { shippori } from "@/app/lib/font"; // ← パス注意
+import { shippori } from "@/app/lib/font";
 
-type SectionComponentProps = { id: string, isActive: boolean }
+type SectionComponentProps = { id: string; isActive: boolean };
 
 type SectionDef = {
   id: "hero" | "intro" | "menu" | "access";
   label: string;
-  component: ComponentType<SectionComponentProps>
+  component: ComponentType<SectionComponentProps>;
 };
 
 export default function HomeClient() {
@@ -35,45 +35,47 @@ export default function HomeClient() {
     []
   );
 
-  const totalSections = sections.length; // ヒーロー、紹介、メニュー、アクセス
-  const { currentSection } = useScrollControl(totalSections, splashCompleted);
+  const totalSections = sections.length;
+  const { currentSection, goToSection, setContainerRef } = useScrollControl(
+    totalSections,
+    splashCompleted
+  );
 
-  const handleSplashComplete = () => {
-    setSplashCompleted(true);
-    setShowSplash(false);
-  };
-
-  // スプラッシュ中は常に 0 番を表示扱い
   const effectiveCurrentSection = splashCompleted ? currentSection : 0;
-  // 一度でも表示されたセクションを保持（戻っても残す）
-  const [visited, setVisited] = useState<string[]>([]);
 
+  // 訪問済みIDの収集
+  const [visited, setVisited] = useState<string[]>([]);
   useEffect(() => {
     if (!splashCompleted) return;
     const id = sections[effectiveCurrentSection].id;
     setVisited((prev) => (prev.includes(id) ? prev : [...prev, id]));
   }, [splashCompleted, effectiveCurrentSection, sections]);
 
-  const handleSectionClick = (index: number) => {
-    const el = document.getElementById(sections[index].id);
-    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const handleNavClick = (index: number) => {
+    goToSection(index); // 直接セクション番号を切り替え（scrollIntoView は hook 側で実行）
   };
 
   return (
-    <div
-      className={`relative min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}
-    >
+    <div className={`relative min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}>
       {/* スプラッシュ */}
-      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+      {showSplash && (
+        <SplashScreen
+          onComplete={() => {
+            setSplashCompleted(true);
+            setShowSplash(false);
+          }}
+        />
+      )}
 
       {/* 本体 */}
       {splashCompleted && (
         <div className="flex">
           {/* 左：メイン */}
-          <div className="w-full lg:w-4/5 relative">
+          <div className="relative h-screen w-full lg:w-4/5">
             {sections.map((section, index) => (
               <FullScreenContainer
                 key={section.id}
+                ref={setContainerRef(index)}
                 isActive={effectiveCurrentSection === index}
                 index={index}
               >
@@ -90,7 +92,7 @@ export default function HomeClient() {
             isVisible={splashCompleted}
             sections={sections.map(({ id, label }) => ({ id, label }))}
             completedSections={visited}
-            onNavClick={handleSectionClick}
+            onNavClick={handleNavClick}
           />
         </div>
       )}
@@ -100,7 +102,7 @@ export default function HomeClient() {
         <ScrollIndicator
           currentSection={effectiveCurrentSection}
           totalSections={totalSections}
-          onSectionClick={handleSectionClick}
+          onSectionClick={handleNavClick}
         />
       )}
 
@@ -109,14 +111,15 @@ export default function HomeClient() {
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 lg:hidden">
           <div className="flex space-x-2">
             {Array.from({ length: totalSections }).map((_, index) => (
-              <div
+              <button
                 key={index}
+                aria-label={`Go to section ${index + 1}`}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   effectiveCurrentSection === index
                     ? "bg-japanese-red scale-125"
                     : "bg-japanese-white/30"
                 }`}
-                onClick={() => handleSectionClick(index)}
+                onClick={() => handleNavClick(index)}
               />
             ))}
           </div>
@@ -125,4 +128,3 @@ export default function HomeClient() {
     </div>
   );
 }
-

@@ -1,111 +1,154 @@
-'use client';
+// hooks/useScrollControl.ts
+"use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
-const SCROLL_DELAY = 800;
-const SWIPE_THRESHOLD = 50;
-const SCROLL_THRESHOLD = 100; // ← スクロールの積算しきい値
+const EDGE_WHEEL_THRESHOLD = 320;
+const SWIPE_THRESHOLD = 120;
+const COOLDOWN_MS = 1000;
 
-export const useScrollControl = (totalSections: number, enabled: boolean = true) => {
+export const useScrollControl = (totalSections: number, enabled = true) => {
   const [currentSection, setCurrentSection] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
 
-  const currentSectionRef = useRef(currentSection);
-  const isScrollingRef = useRef(isScrolling);
-  const scrollAccumulator = useRef(0); // ← 累積スクロール量
+  const containersRef = useRef<(HTMLDivElement | null)[]>([]);
+  const setContainerRef = useCallback(
+    (index: number) => (el: HTMLDivElement | null) => {
+      containersRef.current[index] = el;
+    },
+    []
+  );
+
+  // 👇 Hookはトップレベルで宣言！
+  const touchStartY = useRef<number | null>(null);
+  const lastSwitchAt = useRef(0);
+  const edgeIntent = useRef<{ index: number | null; dir: "up" | "down" | null; acc: number }>({
+    index: null,
+    dir: null,
+    acc: 0,
+  });
+
+  const clamp = (n: number) => Math.max(0, Math.min(n, totalSections - 1));
+
+  const goToSection = useCallback(
+    (index: number) => setCurrentSection(clamp(index)),
+    [totalSections]
+  );
+
+  const moveSection = useCallback(
+    (dir: "up" | "down") =>
+      setCurrentSection((prev) => clamp(prev + (dir === "down" ? 1 : -1))),
+    [totalSections]
+  );
+
+  const inCooldown = () => Date.now() - lastSwitchAt.current < COOLDOWN_MS;
 
   useEffect(() => {
-    currentSectionRef.current = currentSection;
-  }, [currentSection]);
+    if (!enabled) return;
+    const el = containersRef.current[currentSection];
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    lastSwitchAt.current = Date.now();
+  }, [currentSection, enabled]);
+
+  const isAtTop = (el: HTMLElement) => el.scrollTop <= 0;
+  const isAtBottom = (el: HTMLElement) =>
+    el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
 
   useEffect(() => {
-    isScrollingRef.current = isScrolling;
-  }, [isScrolling]);
-
-  const moveSection = useCallback((direction: 'up' | 'down') => {
-    const nextSection =
-      direction === 'down'
-        ? Math.min(currentSectionRef.current + 1, totalSections - 1)
-        : Math.max(currentSectionRef.current - 1, 0);
-
-    if (nextSection !== currentSectionRef.current) {
-      setCurrentSection(nextSection);
-    }
-
-    setIsScrolling(true);
-    setTimeout(() => {
-      setIsScrolling(false);
-      scrollAccumulator.current = 0; // ← 累積スクロールリセット
-    }, SCROLL_DELAY);
-  }, [totalSections]);
-
-  const handleWheel = useCallback((e: WheelEvent) => {
-    if (!enabled || isScrollingRef.current) return;
-
-    e.preventDefault();
-    scrollAccumulator.current += e.deltaY;
-
-    if (scrollAccumulator.current >= SCROLL_THRESHOLD && currentSectionRef.current < totalSections - 1) {
-      moveSection('down');
-    } else if (scrollAccumulator.current <= -SCROLL_THRESHOLD && currentSectionRef.current > 0) {
-      moveSection('up');
-    }
-  }, [enabled, moveSection, totalSections]);
-
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!enabled || isScrollingRef.current) return;
-
-    if (e.key === 'ArrowDown' && currentSectionRef.current < totalSections - 1) {
-      e.preventDefault();
-      moveSection('down');
-    } else if (e.key === 'ArrowUp' && currentSectionRef.current > 0) {
-      e.preventDefault();
-      moveSection('up');
-    }
-  }, [enabled, moveSection, totalSections]);
-
-  const handleTouchStart = useCallback((startEvent: TouchEvent) => {
     if (!enabled) return;
 
-    const startY = startEvent.touches[0].clientY;
+    const onWheel = (index: number) => (e: WheelEvent) => {
+      const el = containersRef.current[index];
+      if (!el) return;
 
-    const handleTouchEnd = (endEvent: TouchEvent) => {
-      if (isScrollingRef.current) return;
+      const dy = e.deltaY;
+      const atTop = isAtTop(el);
+      const atBottom = isAtBottom(el);
 
-      const endY = endEvent.changedTouches[0].clientY;
-      const diffY = startY - endY;
-
-      if (Math.abs(diffY) > SWIPE_THRESHOLD) {
-        if (diffY > 0 && currentSectionRef.current < totalSections - 1) {
-          moveSection('down');
-        } else if (diffY < 0 && currentSectionRef.current > 0) {
-          moveSection('up');
-        }
+      if ((!atTop && dy < 0) || (!atBottom && dy > 0)) {
+        edgeIntent.current = { index: null, dir: null, acc: 0 };
+        return;
       }
 
-      document.removeEventListener('touchend', handleTouchEnd);
+      if (dy > 0 && atBottom && index < totalSections - 1) {
+        e.preventDefault();
+        if (inCooldown()) return;
+        const same =
+          edgeIntent.current.index === index && edgeIntent.current.dir === "down";
+        edgeIntent.current = {
+          index,
+          dir: "down",
+          acc: same ? edgeIntent.current.acc + dy : dy,
+        };
+        if (edgeIntent.current.acc >= EDGE_WHEEL_THRESHOLD) {
+          edgeIntent.current = { index: null, dir: null, acc: 0 };
+          moveSection("down");
+        }
+      } else if (dy < 0 && atTop && index > 0) {
+        e.preventDefault();
+        if (inCooldown()) return;
+        const same =
+          edgeIntent.current.index === index && edgeIntent.current.dir === "up";
+        edgeIntent.current = {
+          index,
+          dir: "up",
+          acc: same ? edgeIntent.current.acc + -dy : -dy,
+        };
+        if (edgeIntent.current.acc >= EDGE_WHEEL_THRESHOLD) {
+          edgeIntent.current = { index: null, dir: null, acc: 0 };
+          moveSection("up");
+        }
+      }
     };
 
-    document.addEventListener('touchend', handleTouchEnd, { once: true });
-  }, [enabled, moveSection, totalSections]);
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    document.addEventListener('wheel', handleWheel, { passive: false });
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('touchstart', handleTouchStart);
-
-    return () => {
-      document.removeEventListener('wheel', handleWheel);
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('touchstart', handleTouchStart);
+    const onTouchStart = (_index: number) => (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
     };
-  }, [enabled, handleWheel, handleKeyDown, handleTouchStart]);
 
-  useEffect(() => {
-    console.log('Current section changed to:', currentSection);
-  }, [currentSection]);
+    const onTouchMove = (index: number) => (e: TouchEvent) => {
+      const el = containersRef.current[index];
+      if (!el || touchStartY.current === null) return;
 
-  return { currentSection, isScrolling };
+      const dy = touchStartY.current - e.touches[0].clientY;
+      const atTop = isAtTop(el);
+      const atBottom = isAtBottom(el);
+
+      if (inCooldown()) return;
+
+      if (dy > SWIPE_THRESHOLD && atBottom && index < totalSections - 1) {
+        e.preventDefault();
+        touchStartY.current = null;
+        moveSection("down");
+      } else if (dy < -SWIPE_THRESHOLD && atTop && index > 0) {
+        e.preventDefault();
+        touchStartY.current = null;
+        moveSection("up");
+      }
+    };
+
+    const onTouchEnd = () => {
+      touchStartY.current = null;
+    };
+
+    const disposers: Array<() => void> = [];
+    containersRef.current.forEach((el, index) => {
+      if (!el) return;
+      const wheel = onWheel(index);
+      const ts = onTouchStart(index);
+      const tm = onTouchMove(index);
+      el.addEventListener("wheel", wheel, { passive: false });
+      el.addEventListener("touchstart", ts, { passive: true });
+      el.addEventListener("touchmove", tm, { passive: false });
+      el.addEventListener("touchend", onTouchEnd, { passive: true });
+      disposers.push(() => {
+        el.removeEventListener("wheel", wheel);
+        el.removeEventListener("touchstart", ts);
+        el.removeEventListener("touchmove", tm);
+        el.removeEventListener("touchend", onTouchEnd);
+      });
+    });
+
+    return () => disposers.forEach((d) => d());
+  }, [enabled, totalSections, moveSection]);
+
+  return { currentSection, goToSection, setContainerRef };
 };
