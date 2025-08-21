@@ -5,9 +5,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const EDGE_WHEEL_THRESHOLD = 320;
 const SWIPE_THRESHOLD = 120;
-const COOLDOWN_MS = 1000;
+const COOLDOWN_MS = 700;
 
 const clamp = (n: number, total: number) => Math.max(0, Math.min(n, total - 1));
+
+type Dir = "up" | "down";
 
 export const useScrollControl = (totalSections: number, enabled = true) => {
   const [currentSection, setCurrentSection] = useState(0);
@@ -33,35 +35,51 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
     acc: 0,
   });
 
+  const [direction, setDirection] = useState<Dir>("down");
+
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
+  const currentIndexRef = useRef(0);
+
   const goToSection = useCallback(
     (index: number) => {
       const i = clamp(index, totalSections);
+      setPrevIndex(currentIndexRef.current);
       const el = containersRef.current[i];
+
       if (el) {
         el.scrollTop = 0;
-        el.scrollTo({ top: 0, behavior: "auto" })
+        el.scrollTo({ top: 0, behavior: "auto" });
       }
+
+      const prev = currentSection;
+      if (i > prev) {
+        setDirection("down");
+      } else if (i < prev) {
+        setDirection("up");
+      }
+
       setCurrentSection(i);
     },
-    [totalSections]
+    [totalSections, currentSection]
   );
 
-  const currentIndexRef = useRef(0);
   useEffect(() => {
     currentIndexRef.current = currentSection;
-  }, [currentSection])
+  }, [currentSection]);
 
   const moveSection = useCallback(
-    (dir: "up" | "down") => {
+    (dir: Dir) => {
       const prev = currentIndexRef.current;
       const next = clamp(prev + (dir === "down" ? 1 : -1), totalSections);
 
+      setPrevIndex(prev);
+
       const target = containersRef.current[next];
-      if(target) {
-        target.scrollTop = 0
+      if (target) {
+        target.scrollTop = 0;
         target.scrollTo({ top: 0, behavior: "auto" });
       }
-
+      setDirection(dir);
       setCurrentSection(next);
     },
     [totalSections]
@@ -178,5 +196,5 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
     return () => disposers.forEach((d) => d());
   }, [enabled, totalSections, moveSection]);
 
-  return { currentSection, goToSection, setContainerRef };
+  return { currentSection, direction, goToSection, setContainerRef, prevIndex };
 };
