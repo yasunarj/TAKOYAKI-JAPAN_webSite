@@ -13,6 +13,7 @@ import AccessSection from "@/components/AccessSection";
 import ScrollIndicator from "./ScrollIndicator";
 import { useScrollControl } from "@/hooks/useScrollControl";
 import { shippori } from "@/app/lib/font";
+import { useI18n } from "@/i18n/I18nProvider";
 
 type SectionComponentProps = { id: string; isActive: boolean };
 
@@ -25,12 +26,13 @@ type SectionDef = {
 export default function HomeClient() {
   const [showSplash, setShowSplash] = useState(true);
   const [splashCompleted, setSplashCompleted] = useState(false);
+  const { t } = useI18n();
 
   const sections: SectionDef[] = useMemo(
     () => [
       {
         id: "hero",
-        label: "TOP",
+        label: t.nav.hero,
         component: HeroSection,
         preview: (
           <div className="flex gap-2">
@@ -54,7 +56,7 @@ export default function HomeClient() {
       },
       {
         id: "intro",
-        label: "店舗紹介",
+        label: t.nav.intro,
         component: IntroSection,
         preview: (
           <div className="flex gap-2">
@@ -78,7 +80,7 @@ export default function HomeClient() {
       },
       {
         id: "menu",
-        label: "メニュー",
+        label: t.nav.menu,
         component: MenuSection,
         preview: (
           <div className="flex gap-2">
@@ -101,7 +103,7 @@ export default function HomeClient() {
       },
       {
         id: "access",
-        label: "アクセス",
+        label: t.nav.access,
         component: AccessSection,
         preview: (
           <div className="flex gap-2">
@@ -124,7 +126,7 @@ export default function HomeClient() {
         ),
       },
     ],
-    []
+    [t]
   );
 
   const totalSections = sections.length;

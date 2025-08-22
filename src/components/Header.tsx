@@ -3,7 +3,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { PATTERNS } from "@/app/styles/patterns";
+import { useI18n } from "@/i18n/I18nProvider";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+const GoogleTranslate = dynamic(() => import("./GoogleTranslate"), {
+  ssr: false,
+});
 
 type HeaderSection = { id: string; label: string };
 
@@ -21,6 +26,7 @@ export default function Header({
   onNavClick,
 }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { locale, setLocale } = useI18n();
 
   // 設計順を保ったまま、visited のみ表示
   const visibleSections = sections.filter((s) =>
@@ -128,10 +134,26 @@ export default function Header({
             transition={{ duration: 0.5, delay: 1.2 }}
           >
             <div className="flex space-x-2">
-              <button className="px-3 py-1 text-xs bg-japanese-red text-white rounded">
+              <button
+                className={`px-3 py-1 text-xs rounded ${
+                  locale === "ja"
+                    ? "bg-japanese-red text-white"
+                    : "text-japanese-white hover:bg-japanese-gray"
+                }`}
+                onClick={() => setLocale("ja")}
+                aria-pressed={locale === "ja"}
+              >
                 JA
               </button>
-              <button className="px-3 py-1 text-xs text-japanese-white hover:bg-japanese-gray rounded">
+              <button
+                className={`px-3 py-1 text-xs rounded ${
+                  locale === "en"
+                    ? "bg-japanese-red text-white"
+                    : "text-japanese-white hover:bg-japanese-gray"
+                }`}
+                onClick={() => setLocale("en")}
+                aria-pressed={locale === "en"}
+              >
                 EN
               </button>
             </div>

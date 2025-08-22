@@ -1,8 +1,8 @@
 "use client";
 
-
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 
 interface HeroSectionProps {
   id: string;
@@ -11,6 +11,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ id, isActive }: HeroSectionProps) {
   const [showContent, setShowContent] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (isActive) {
@@ -60,12 +61,12 @@ export default function HeroSection({ id, isActive }: HeroSectionProps) {
             animate={showContent ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            日光の伝統的な味を
+            {t.hero.tagline1}
             <br />
             <span className={`text-japanese-gold font-semibold`}>
-              心を込めて
+              {t.hero.taglineEm}
             </span>
-            お届けします
+            {t.hero.tagline2}
           </motion.p>
 
           {/* 装飾的な線 */}

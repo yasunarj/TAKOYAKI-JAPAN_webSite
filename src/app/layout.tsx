@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { I18nProvider } from "@/i18n/I18nProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <I18nProvider>{children}</I18nProvider>
+      </body>
     </html>
   );
 }
