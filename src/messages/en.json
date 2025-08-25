@@ -1,0 +1,172 @@
+{
+  "home": { "title": "Welcome" },
+  "brand": "TAKOYAKI JAPAN",
+
+  "splash": {
+    "bg_alt": "Splash screen background image",
+    "logo_alt": "TAKOYAKI JAPAN logo",
+    "subtitle": "Traditional takoyaki shop in Nikko",
+    "loading_aria": "Loading..."
+  },
+
+  "nav": {
+    "hero": "Home",
+    "intro": "About",
+    "menu": "Menu",
+    "access": "Access"
+  },
+
+  "preview": {
+    "hero": {
+      "alt": "Hero section preview image",
+      "lines": {
+        "background": "Store background",
+        "catchcopy": "Tagline"
+      }
+    },
+    "intro": {
+      "alt": "About section preview image",
+      "lines": {
+        "features": "Key features",
+        "atmosphere": "In-store atmosphere"
+      }
+    },
+    "menu": {
+      "alt": "Menu section preview image",
+      "item": "Nikko Takoyaki",
+      "price_label": "¥{price}"
+    },
+    "access": {
+      "alt": "Access section preview image",
+      "address": "栃木県日光市下鉢石町795-1",
+      "hours_label": "Hours {open}-{close}"
+    }
+  },
+
+  "hero": {
+    "titleTop": "TAKOYAKI",
+    "titleBottom": "JAPAN",
+    "tagline1": "Traditional taste of Nikko,",
+    "taglineEm": "crafted with care,",
+    "tagline2": "delivered to you."
+  },
+
+  "intro": {
+    "heading": "About",
+    "lead_long": "Surrounded by the beautiful nature of Nikko, we blend traditional Japanese flavors with modern service to bring you a special takoyaki experience.",
+    "features": {
+      "lantern": {
+        "title": "Traditional Red Lanterns",
+        "desc": "Red lanterns line the entrance, creating an authentic Japanese atmosphere. At night they glow warmly, welcoming every guest."
+      },
+      "music": {
+        "title": "Relaxing Music",
+        "desc": "Traditional Japanese music plays in the store, letting you enjoy your meal in a calm, soothing space."
+      },
+      "terrace": {
+        "title": "Open Terrace",
+        "desc": "Feel the fresh air and sunshine on our open terrace while enjoying the beauty of Nikko through the seasons."
+      },
+      "multilingual": {
+        "title": "Multilingual Friendly",
+        "desc": "English menus are available so visitors from overseas can order with confidence."
+      },
+      "payment": {
+        "title": "Multiple Payment Options",
+        "desc": "Cash, credit cards, e-money and QR payments are available for your convenience."
+      },
+      "craftsmanship": {
+        "title": "Craftsmanship",
+        "desc": "Each takoyaki is carefully cooked by skilled artisans to achieve authentic flavor."
+      }
+    },
+    "atmosphere": {
+      "heading": "Where Tradition Meets Today",
+      "body": "Nikko is known for its rich history and World Heritage sites. We cherish that traditional atmosphere while offering services that suit modern needs. Relax, unwind, and enjoy authentic takoyaki in a comfortable space."
+    }
+  },
+
+  "menu": {
+    "heading": "Menu",
+    "lead_long": "Enjoy authentic takoyaki made with fresh local ingredients and craftsmanship.",
+
+    "featured": {
+      "image_alt": "Nikko Special Takoyaki",
+      "badge_popular": "Best Seller",
+
+      "name": "Nikko Special Takoyaki",
+      "description": "Our signature takoyaki made with fresh ingredients from Nikko. Seasoned with our secret tare and special sauce, it’s crispy on the outside and fluffy inside.",
+      "price_label": "¥{price}",
+
+      "features_heading": "Highlights",
+      "features": {
+        "f1": "Crispy outside, fluffy inside",
+        "f2": "Secret sauce",
+        "f3": "Local Nikko ingredients",
+        "f4": "Craftsmanship"
+      },
+
+      "ingredients_heading": "Ingredients",
+      "ingredients": {
+        "i1": "Fresh octopus",
+        "i2": "Vegetables from Nikko",
+        "i3": "Secret tare",
+        "i4": "Special sauce"
+      },
+
+      "order_cta": "Order now"
+    },
+
+    "more": {
+      "lead": "We offer many other items as well.",
+      "all_menu_cta": "View full menu"
+    }
+  },
+
+  "access": {
+    "heading": "Access & Store Info",
+    "lead": "We’re located within easy reach of Nikko’s popular sights.\nFeel free to drop by.",
+    "image_alt_store": "Store exterior",
+    "map_title": "Access to the store",
+
+    "basic": {
+      "heading": "Basic Information",
+      "address_label": "Address",
+      "phone_label": "Phone",
+      "hours_label": "Hours",
+      "hours_weekdays": "Weekdays: {hours}",
+      "hours_weekends": "Weekends & Holidays: {hours}",
+
+      "address_value": "栃木県日光市下鉢石町795-1",
+      "phone_value": "07014115588",
+      "hours_weekdays_value": "11:00 - 21:00",
+      "hours_weekends_value": "10:00 - 22:00"
+    },
+
+    "methods": {
+      "heading": "How to Get Here",
+      "train_label": "Train",
+      "bus_label": "Bus",
+      "car_label": "Car",
+      "train": "10 min walk from JR Nikko Station",
+      "bus": "5 min from Nikko Station bus stop",
+      "car": "10 min drive from Nikko IC"
+    },
+
+    "contact": {
+      "heading": "Feel Free to Contact Us",
+      "lead": "For reservations or inquiries, please call us or stop by the store. We look forward to serving you.",
+      "call_cta": "Call us"
+    },
+
+    "payments": {
+      "heading": "Payment Methods",
+      "methods": {
+        "cash": "Cash",
+        "credit_card": "Credit card",
+        "e_money": "E-money",
+        "qr": "QR code payment"
+      }
+    }
+  }
+}

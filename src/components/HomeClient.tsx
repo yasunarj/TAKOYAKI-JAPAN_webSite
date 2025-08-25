@@ -13,6 +13,7 @@ import AccessSection from "@/components/AccessSection";
 import ScrollIndicator from "./ScrollIndicator";
 import { useScrollControl } from "@/hooks/useScrollControl";
 import { shippori } from "@/app/lib/font";
+import { useTranslations } from "next-intl";
 
 type SectionComponentProps = { id: string; isActive: boolean };
 
@@ -25,28 +26,30 @@ type SectionDef = {
 export default function HomeClient() {
   const [showSplash, setShowSplash] = useState(true);
   const [splashCompleted, setSplashCompleted] = useState(false);
+  const tNav = useTranslations("nav");
+  const tPrev = useTranslations("preview");
 
   const sections: SectionDef[] = useMemo(
     () => [
       {
         id: "hero",
-        label: "TOP",
+        label: tNav("hero"),
         component: HeroSection,
         preview: (
           <div className="flex gap-2">
             <Image
               src="/images/topImage.png"
-              alt="heroセクションのプレビュー画像"
+              alt={tPrev("hero.alt")}
               width={80}
               height={80}
               className="object-cover"
             />
             <div>
-              <div className="text-[12px] font-medium">TOP</div>
+              <div className="text-[12px] font-medium">{tNav("hero")}</div>
               <div className="text-[11px] text-white/60 line-clamp-2">
-                店舗背景
+                {tPrev("hero.lines.background")}
                 <br />
-                キャッチコピー
+                {tPrev("hero.lines.catchcopy")}
               </div>
             </div>
           </div>
@@ -54,23 +57,23 @@ export default function HomeClient() {
       },
       {
         id: "intro",
-        label: "店舗紹介",
+        label: tNav("intro"),
         component: IntroSection,
         preview: (
           <div className="flex gap-2">
             <Image
               src="/images/accessStore.jpg"
-              alt="店舗紹介セクションのプレビュー画像"
+              alt={tPrev("intro.alt")}
               width={80}
               height={80}
               className="object-cover"
             />
             <div>
-              <div className="text-[12px] font-medium">店舗紹介</div>
+              <div className="text-[12px] font-medium">{tNav("intro")}</div>
               <div className="text-[11px] text-white/60 line-clamp-2">
-                お店の特徴
+                {tPrev("intro.lines.features")}
                 <br />
-                店舗内の雰囲気紹介
+                {tPrev("intro.lines.atmosphere")}
               </div>
             </div>
           </div>
@@ -78,53 +81,55 @@ export default function HomeClient() {
       },
       {
         id: "menu",
-        label: "メニュー",
+        label: tNav("menu"),
         component: MenuSection,
         preview: (
           <div className="flex gap-2">
             <Image
               src="/images/menu1.jpg"
-              alt="メニューセクションのプレビュー画像"
+              alt={tPrev("menu.alt")}
               width={80}
               height={80}
               className="object-cover"
             />
             <div>
-              <div className="text-[12px] font-medium">メニュー</div>
+              <div className="text-[12px] font-medium">{tNav("menu")}</div>
               <div className="text-[11px] text-white/60 line-clamp-2">
-                日光たこ焼き
+                {tPrev("menu.item")}
               </div>
-              <div className="text-[11px] text-white/60 line-clamp-2">¥680</div>
+              <div className="text-[11px] text-white/60 line-clamp-2">
+                {tPrev("menu.price_label", { price: 680 })}
+              </div>
             </div>
           </div>
         ),
       },
       {
         id: "access",
-        label: "アクセス",
+        label: tNav("access"),
         component: AccessSection,
         preview: (
           <div className="flex gap-2">
             <Image
               src="/images/accessMap.png"
-              alt="アクセスセクションのプレビュー画像"
+              alt={tPrev("access.alt")}
               width={72}
               height={60}
               className="object-cover"
             />
             <div>
-              <div className="text-[12px] font-medium">アクセス</div>
+              <div className="text-[12px] font-medium">{tNav("access")}</div>
               <div className="text-[11px] text-white/60 line-clamp-2">
-                栃木県日光市下鉢石町795-1
+                {tPrev("access.address")}
                 <br />
-                営業時間 10:00-22:00
+                {tPrev("access.hours_label", { open: "10:00", close: "22:00" })}
               </div>
             </div>
           </div>
         ),
       },
     ],
-    []
+    [tNav, tPrev]
   );
 
   const totalSections = sections.length;

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { PATTERNS } from "@/app/styles/patterns";
+import { useTranslations } from "next-intl";
 
 interface AccessSectionProps {
   id: string;
@@ -13,6 +14,7 @@ interface AccessSectionProps {
 export default function AccessSection({ id, isActive }: AccessSectionProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [showContent, setShowContent] = useState(false);
+  const tAccess = useTranslations("access");
 
   useEffect(() => {
     if (isActive) {
@@ -24,18 +26,18 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
   }, [isActive]);
 
   const shopInfo = {
-    address: "栃木県日光市下鉢石町795-1",
-    phone: "07014115588",
+    address: tAccess('basic.address_value'),
+    phone: tAccess('basic.phone_value'),
     hours: {
-      weekdays: "11:00 - 21:00",
-      weekends: "10:00 - 22:00",
-      holidays: "10:00 - 22:00",
+      weekdays: tAccess('basic.hours_weekdays_value'),
+      weekends: tAccess('basic.hours_weekends_value'),
+      holidays: tAccess('basic.hours_weekends_value'),
     },
-    paymentMethods: ["現金", "クレジットカード", "電子マネー", "QRコード決済"],
+    paymentMethods: [tAccess('payments.methods.cash'), tAccess('payments.methods.credit_card'), tAccess('payments.methods.e_money'), tAccess('payments.methods.qr')],
     access: {
-      train: "JR日光線 日光駅から徒歩10分",
-      bus: "日光駅前バス停から5分",
-      car: "日光ICから車で10分",
+      train: tAccess('methods.train'),
+      bus: tAccess('methods.bus'),
+      car: tAccess('methods.car'),
     },
   };
 
@@ -55,7 +57,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-3">
-              アクセス・店舗情報
+              {tAccess("heading")}
             </h2>
             <div className="flex justify-center space-x-2 md:space-x-4 mb-2 sm:mb-3 md:mb-4">
               <div className="w-6 sm:w-8 h-1 md:w-16 bg-japanese-red border border-japanese-red"></div>
@@ -63,9 +65,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
               <div className="w-6 sm:w-8 h-1 md:w-16 bg-japanese-red border border-japanese-red"></div>
             </div>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-japanese-white max-w-3xl mx-auto leading-relaxed px-4">
-              日光の観光地からアクセスしやすい場所にございます。
-              <br />
-              お気軽にお立ち寄りください。
+              {tAccess("lead")}
             </p>
           </motion.div>
 
@@ -84,7 +84,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
               <div className="relative h-56 sm:h-64 md:h-72 lg:h-80 xl:h-88">
                 <Image
                   src="/images/accessStore.jpg"
-                  alt="店舗外観"
+                  alt={tAccess("image_alt_store")}
                   fill
                   className="object-cover"
                   priority={false}
@@ -97,12 +97,12 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
                 style={PATTERNS.tatewaki}
               >
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-3 sm:mb-4 md:mb-6">
-                  基本情報
+                  {tAccess("basic.heading")}
                 </h3>
                 <div className="space-y-3 md:space-y-4">
                   <div className="flex ml-4">
                     <h4 className="text-white w-28 md:w-40 lg:w-28 xl:w-40 font-semibold mb-1 text-xs sm:text-sm md:text-base">
-                      住所
+                      {tAccess("basic.address_label")}
                     </h4>
                     <p className="text-japanese-white text-xs sm:text-sm md:text-base">
                       {shopInfo.address}
@@ -111,7 +111,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
 
                   <div className="flex ml-4">
                     <h4 className="text-white w-28 md:w-40 lg:w-28 xl:w-40 font-semibold mb-1 text-xs sm:text-sm md:text-base">
-                      電話番号
+                      {tAccess("basic.phone_label")}
                     </h4>
                     <p className="text-japanese-white text-xs sm:text-sm md:text-base">
                       {shopInfo.phone}
@@ -120,11 +120,17 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
 
                   <div className="flex ml-4">
                     <h4 className="text-white w-28 md:w-40 lg:w-28 xl:w-40 font-semibold mb-1 text-xs sm:text-sm md:text-base">
-                      営業時間
+                      {tAccess("basic.hours_label")}
                     </h4>
                     <div className="text-japanese-white space-y-1 text-xs sm:text-sm md:text-base">
-                      <p>平日: {shopInfo.hours.weekdays}</p>
-                      <p>土日祝: {shopInfo.hours.weekends}</p>
+                      <p>
+                        {tAccess("basic.hours_weekdays", {
+                          hours: shopInfo.hours.weekdays,
+                        })}
+                      </p>
+                      <p>{tAccess("basic.hours_weekends", {
+                          hours: shopInfo.hours.weekends,
+                        })}</p>
                     </div>
                   </div>
                 </div>
@@ -143,7 +149,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
               {/* Map プレースホルダー（ここにiframe等を入れ替え可能） */}
               <div className="relative h-56 sm:h-64 md:h-72 lg:h-80 xl:h-88 bg-gradient-to-br from-japanese-gray to-japanese-dark-gray flex items-center justify-center">
                 <iframe
-                  title="店舗へのアクセス"
+                  title={tAccess('map_title')}
                   src={`https://www.google.com/maps?q=${encodeURIComponent(
                     "栃木県日光市下鉢石町795-1"
                   )}&hl=ja&output=embed`}
@@ -160,14 +166,14 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
                 style={PATTERNS.tatewaki}
               >
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-3 sm:mb-4 md:mb-6">
-                  アクセス方法
+                  {tAccess('methods.heading')}
                 </h3>
 
                 <div className="space-y-3 md:space-y-4">
                   <div className="flex items-start">
                     <div className="flex ml-4">
                       <h4 className="text-white w-28 md:w-40 lg:w-20 xl:w-32 font-semibold mb-1 text-xs sm:text-sm md:text-base">
-                        電車
+                      {tAccess('methods.train_label')}
                       </h4>
                       <p className="text-japanese-white text-xs sm:text-sm md:text-base">
                         {shopInfo.access.train}
@@ -178,7 +184,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
                   <div className="flex items-start">
                     <div className="flex ml-4">
                       <h4 className="text-white w-28 md:w-40 lg:w-20 xl:w-32 font-semibold mb-1 text-xs sm:text-sm md:text-base">
-                        バス
+                      {tAccess('methods.bus_label')}
                       </h4>
                       <p className="text-japanese-white text-xs sm:text-sm md:text-base">
                         {shopInfo.access.bus}
@@ -189,7 +195,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
                   <div className="flex items-start">
                     <div className="flex ml-4">
                       <h4 className="text-white w-28 md:w-40 lg:w-20 xl:w-32 font-semibold mb-1 text-xs sm:text-sm md:text-base">
-                        車
+                      {tAccess('methods.car_label')}
                       </h4>
                       <p className="text-japanese-white text-xs sm:text-sm md:text-base">
                         {shopInfo.access.car}
@@ -213,18 +219,17 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
               style={PATTERNS.tatewaki}
             >
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 md:mb-6">
-                お気軽にお問い合わせください
+              {tAccess('contact.heading')}
               </h3>
               <p className="text-sm sm:text-base md:text-lg text-japanese-white mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto px-4">
-                ご予約やお問い合わせは、お電話またはお気軽に店舗までお立ち寄りください。
-                スタッフ一同、心よりお待ちしております。
+              {tAccess('contact.lead')}
               </p>
               <motion.button
                 className="px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-japanese-red text-white font-bold hover:bg-japanese-crimson transition-colors duration-300 text-sm md:text-base border border-japanese-red"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                お電話でお問い合わせ
+                {tAccess('contact.call_cta')}
               </motion.button>
             </div>
           </motion.div>

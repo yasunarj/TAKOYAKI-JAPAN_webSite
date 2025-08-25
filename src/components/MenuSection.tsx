@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { PATTERNS } from "@/app/styles/patterns";
+import { useTranslations } from "next-intl";
 
 interface MenuSectionProps {
   id: string;
@@ -13,6 +14,7 @@ interface MenuSectionProps {
 export default function MenuSection({ id, isActive }: MenuSectionProps) {
   const ref = useRef(null);
   const [showContent, setShowContent] = useState(false);
+  const tMenu = useTranslations("menu");
 
   useEffect(() => {
     console.log("MenuSection isActive:", isActive); // デバッグログ
@@ -28,17 +30,21 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
   }, [isActive]);
 
   const featuredItem = {
-    name: "日光特製たこ焼き",
-    description:
-      "日光の新鮮な食材を使用した、当店自慢の特製たこ焼きです。秘伝のタレとソースで味付けし、外はカリッと、中はふわふわの絶妙な食感をお楽しみいただけます。",
-    price: "¥680",
+    name: tMenu("featured.name"),
+    description: tMenu("featured.description"),
+    price: tMenu("featured.price_label", { price: 680 }),
     image: "/images/manu1.jpg", // メニュー画像
-    ingredients: ["新鮮なたこ", "日光産の野菜", "秘伝のタレ", "特製ソース"],
+    ingredients: [
+      tMenu("featured.ingredients.i1"),
+      tMenu("featured.ingredients.i2"),
+      tMenu("featured.ingredients.i3"),
+      tMenu("featured.ingredients.i4"),
+    ],
     features: [
-      "外カリッと中ふわふわ",
-      "秘伝のタレ使用",
-      "日光産食材",
-      "職人技",
+      tMenu("featured.features.f1"),
+      tMenu("featured.features.f2"),
+      tMenu("featured.features.f3"),
+      tMenu("featured.features.f4"),
     ],
   };
 
@@ -58,7 +64,7 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 font-brush">
-              メニュー
+              {tMenu("heading")}
             </h2>
             <div className="flex justify-center space-x-2 md:space-x-4 mb-4 sm:mb-6 md:mb-8">
               <div className="w-6 sm:w-8 h-1 md:w-16 bg-japanese-red border border-japanese-red"></div>
@@ -66,7 +72,7 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
               <div className="w-6 sm:w-8 h-1 md:w-16 bg-japanese-red border border-japanese-red"></div>
             </div>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-japanese-white max-w-3xl mx-auto leading-relaxed px-4 font-maru">
-              職人の技と日光の新鮮な食材で作る、本格的なたこ焼きをお楽しみください。
+              {tMenu("lead_long")}
             </p>
           </motion.div>
 
@@ -91,7 +97,7 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
                 <div className="absolute inset-0">
                   <Image
                     src="/images/menu1.jpg"
-                    alt="日光特製たこ焼き"
+                    alt={tMenu("featured.image_alt")}
                     fill
                     className="object-cover"
                     priority
@@ -102,12 +108,15 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
 
                 {/* 装飾的な要素 */}
                 <div className="absolute top-2 sm:top-3 md:top-4 right-2 sm:right-3 md:right-4 bg-japanese-gold text-japanese-black px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-bold border border-japanese-gold">
-                  人気No.1
+                  {tMenu("featured.badge_popular")}
                 </div>
               </motion.div>
 
               {/* コンテンツエリア */}
-              <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12" style={PATTERNS.karakusa}>
+              <div
+                className="relative p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12"
+                style={PATTERNS.karakusa}
+              >
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={
@@ -142,7 +151,7 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
                   {/* 特徴リスト */}
                   <div className="mb-3 sm:mb-4 md:mb-6">
                     <h4 className="text-sm sm:text-base md:text-lg font-semibold text-white mb-2 md:mb-3">
-                      特徴
+                      {tMenu("featured.features_heading")}
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {featuredItem.features.map((feature, index) => (
@@ -170,7 +179,7 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
                   {/* 材料リスト */}
                   <div className="mb-4 sm:mb-6 md:mb-8">
                     <h4 className="text-sm sm:text-base md:text-lg font-semibold text-white mb-2 md:mb-3">
-                      使用材料
+                      {tMenu("featured.ingredients_heading")}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {featuredItem.ingredients.map((ingredient, index) => (
@@ -205,7 +214,7 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    注文する
+                    {tMenu("featured.order_cta")}
                   </motion.button>
                 </motion.div>
               </div>
@@ -220,14 +229,14 @@ export default function MenuSection({ id, isActive }: MenuSectionProps) {
             transition={{ duration: 0.6, delay: 1.6 }}
           >
             <p className="text-sm sm:text-base md:text-lg text-japanese-white mb-4 md:mb-6 px-4 ">
-              他にも様々なメニューをご用意しています
+              {tMenu("more.lead")}
             </p>
             <motion.button
               className="px-4 sm:px-6 md:px-8 py-3 md:py-3 border-2 border-japanese-red text-japanese-red font-bold rounded-lg hover:bg-japanese-red hover:text-white transition-all duration-300 text-sm md:text-base font-brush"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              全メニューを見る
+              {tMenu("more.all_menu_cta")}
             </motion.button>
           </motion.div>
         </div>

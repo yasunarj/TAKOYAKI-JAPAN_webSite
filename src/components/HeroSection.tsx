@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface HeroSectionProps {
   id: string;
@@ -11,6 +12,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ id, isActive }: HeroSectionProps) {
   const [showContent, setShowContent] = useState(false);
+  const tHero = useTranslations('hero');
 
   useEffect(() => {
     if (isActive) {
@@ -60,12 +62,12 @@ export default function HeroSection({ id, isActive }: HeroSectionProps) {
             animate={showContent ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            日光の伝統的な味を
+            {tHero('tagline1')}
             <br />
             <span className={`text-japanese-gold font-semibold`}>
-              心を込めて
+            {tHero('taglineEm')}
             </span>
-            お届けします
+            {tHero('tagline2')}
           </motion.p>
 
           {/* 装飾的な線 */}

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -10,6 +11,8 @@ interface SplashScreenProps {
 
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const t = useTranslations('splash');
+  const tAll = useTranslations();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -56,7 +59,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           <div className="relative w-32 h-20 md:w-48 md:h-24 mx-auto flex items-center justify-center shadow-lg">
             <Image
               src="/images/TAKOYAKI_JAPAN.png"
-              alt="TAKOYAKI_JAPANのロゴ"
+              alt={t('bg_alt')}
               fill
               className=""
             />
@@ -70,7 +73,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          TAKOYAKI JAPAN
+          {tAll('brand')}
         </motion.h1>
 
         {/* サブタイトル */}
@@ -80,7 +83,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          日光の伝統的なたこ焼き店
+          {t("subtitle")}
         </motion.p>
 
         {/* 装飾的な線 */}
@@ -101,7 +104,10 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 1.5 }}
+          role="status"
+          aria-live="polite"
         >
+          <span className="sr-only">{t('loading_aria')}</span>
           <div className="flex space-x-1">
             {[0, 1, 2].map((i) => (
               <motion.div

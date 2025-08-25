@@ -1,5 +1,7 @@
 "use client";
 
+import { useLocale } from "next-intl";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { PATTERNS } from "@/app/styles/patterns";
@@ -20,6 +22,7 @@ export default function Header({
   completedSections,
   onNavClick,
 }: HeaderProps) {
+  const locale = useLocale();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // 設計順を保ったまま、visited のみ表示
@@ -128,12 +131,28 @@ export default function Header({
             transition={{ duration: 0.5, delay: 1.2 }}
           >
             <div className="flex space-x-2">
-              <button className="px-3 py-1 text-xs bg-japanese-red text-white rounded">
+              <Link
+                href="/ja"
+                locale="ja"
+                className={`px-3 py-1 text-xs rounded ${
+                  locale === "ja"
+                    ? "bg-japanese-red text-white"
+                    : "text-japanese-white hover:bg-japanese-gray"
+                }`}
+              >
                 JA
-              </button>
-              <button className="px-3 py-1 text-xs text-japanese-white hover:bg-japanese-gray rounded">
+              </Link>
+              <Link
+                href="/en"
+                locale="en"
+                className={`px-3 py-1 text-xs rounded ${
+                  locale === "en"
+                    ? "bg-japanese-red text-white"
+                    : "text-japanese-white hover:bg-japanese-gray"
+                }`}
+              >
                 EN
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -244,12 +263,28 @@ export default function Header({
             {/* モバイル言語切り替え */}
             <div className="mt-4 pt-4 border-t border-japanese-gray">
               <div className="flex space-x-2">
-                <button className="px-3 py-1 text-sm bg-japanese-red text-white rounded">
+                <Link
+                  href="/"
+                  locale="ja"
+                  className={`px-3 py-1 text-xs rounded ${
+                    locale === "ja"
+                      ? "bg-japanese-red text-white"
+                      : "text-japanese-white hover:bg-japanese-gray"
+                  }`}
+                >
                   JA
-                </button>
-                <button className="px-3 py-1 text-sm text-japanese-white hover:bg-japanese-gray rounded">
+                </Link>
+                <Link
+                  href="/"
+                  locale="en"
+                  className={`px-3 py-1 text-xs rounded ${
+                    locale === "en"
+                      ? "bg-japanese-red text-white"
+                      : "text-japanese-white hover:bg-japanese-gray"
+                  }`}
+                >
                   EN
-                </button>
+                </Link>
               </div>
             </div>
           </nav>
