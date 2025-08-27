@@ -22,7 +22,10 @@ export async function generateMetadata({
     ? '日光、栃木県にある伝統的なたこ焼き店。赤提灯が並ぶ入口、リラックスできる日本音楽、オープンテラスで新鮮な空気と日光を楽しめます。英語メニュー、多様な決済方法対応。'
     : 'Traditional takoyaki in Nikko, Tochigi. Lantern-lined entrance, relaxing music, open terrace, English menu, and multiple payment methods.';
 
+  const metadataBase = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000');
+
   return {
+    metadataBase,
     title,
     description,
     openGraph: {
@@ -37,9 +40,6 @@ export async function generateMetadata({
   };
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000')
-}
 
 export default async function LocaleLayout({
   children,
