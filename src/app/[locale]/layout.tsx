@@ -52,7 +52,6 @@ export default async function LocaleLayout({
 
   if (!locales.includes(locale)) notFound();
   const messages = (await import(`@/messages/${locale}.json`)).default;
-Ï
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
