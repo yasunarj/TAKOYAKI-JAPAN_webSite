@@ -170,7 +170,7 @@ export default function Header({
           className="absolute inset-0 pointer-events-none z-0"
           style={PATTERNS.shippo}
         />
-        <div className="relative flex z-10 items-center justify-between p-4">
+        <div className="relative flex z-10 items-center justify-between px-4 py-2">
           {/* ロゴ */}
           <motion.div
             className="flex items-end"
@@ -178,7 +178,7 @@ export default function Header({
             animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -20 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <div className="relative w-24 h-12 bg-japanese-red rounded-full flex items-center justify-center mr-3">
+            <div className="relative w-20 h-10 bg-japanese-red rounded-full flex items-center justify-center mr-3">
               <Image
                 src="/images/TAKOYAKI_JAPAN.png"
                 alt="TAKOYAKI_JAPANのロゴ"
