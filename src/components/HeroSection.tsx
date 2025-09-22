@@ -12,17 +12,13 @@ export default function HeroSection({
 }) {
   const tHero = useTranslations("hero");
 
-  // ヒーローテキストのアニメ
   const [showContent, setShowContent] = useState(false);
-
-  // Intro（千客万来）と動画の状態管理
-  const [minElapsed, setMinElapsed] = useState(false); // 最低表示時間を満たしたら true
-  const [ready, setReady] = useState(false);           // video が十分読み込めたら true
-  const [videoOk, setVideoOk] = useState(false);       // play() 成功で true
-  const [hideIntro, setHideIntro] = useState(false);   // 完全にフェードアウト後にアンマウント
+  const [minElapsed, setMinElapsed] = useState(false); // 「千客万来」最低表示時間
+  const [videoOk, setVideoOk] = useState(false);       // play() 成功
+  const [hideIntro, setHideIntro] = useState(false);   // 千客万来をDOMから外す
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // ヒーロー上物の出し
+  // ヒーロー上物
   useEffect(() => {
     if (isActive) {
       const timer = setTimeout(() => setShowContent(true), 500);
@@ -31,40 +27,90 @@ export default function HeroSection({
     setShowContent(false);
   }, [isActive]);
 
-  // Introを1.6秒は見せる（お好みで 1000〜2000ms に調整）
+  // 最低1.6秒は「千客万来」を見せる
   useEffect(() => {
     const t = setTimeout(() => setMinElapsed(true), 1600);
     return () => clearTimeout(t);
   }, []);
 
-  // 動画の読み込み＆再生（canplaythrough で十分なバッファ）
+  // 動画の再生試行（イベント/タイムアウト/ユーザー操作で再試行）
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+
+    // 自動再生の安全策：属性だけでなくプロパティでも設定
     v.muted = true;
     v.playsInline = true;
 
-    const onCanPlayThrough = async () => {
-      setReady(true);
+    let played = false;
+
+    const tryPlay = async () => {
+      if (!v || played) return;
       try {
         await v.play();
+        played = true;
         setVideoOk(true);
       } catch {
+        // まだブロック/未ロードなら次のトリガで再挑戦
         setVideoOk(false);
       }
     };
 
-    v.addEventListener("canplaythrough", onCanPlayThrough, { once: true });
-    if (v.readyState >= 4) onCanPlayThrough();
+    // 早めに来る可能性のある順でイベントを監視
+    const onLoadedData = () => tryPlay();
+    const onCanPlay = () => tryPlay();
+    const onCanPlayThrough = () => tryPlay();
 
-    return () => v.removeEventListener("canplaythrough", onCanPlayThrough);
+    v.addEventListener("loadeddata", onLoadedData);
+    v.addEventListener("canplay", onCanPlay);
+    v.addEventListener("canplaythrough", onCanPlayThrough);
+
+    // 既に再生可能なら即試行
+    if (v.readyState >= 2) tryPlay();
+
+    // タイムアウトで再試行（ネット遅延時の救済）
+    const retryTimer = setTimeout(() => tryPlay(), 1500);
+
+    // タブがアクティブになったら再挑戦（iOSで効くことあり）
+    const onVis = () => {
+      if (document.visibilityState === "visible") tryPlay();
+    };
+    document.addEventListener("visibilitychange", onVis);
+
+    return () => {
+      clearTimeout(retryTimer);
+      document.removeEventListener("visibilitychange", onVis);
+      v.removeEventListener("loadeddata", onLoadedData);
+      v.removeEventListener("canplay", onCanPlay);
+      v.removeEventListener("canplaythrough", onCanPlayThrough);
+    };
   }, []);
 
-  // どのタイミングで動画を見せ始めるか：最低時間クリア かつ 再生OK
-  const revealVideo = minElapsed && ready && videoOk;
+  // どのタイミングで動画を見せ始めるか：最低時間クリア かつ 再生成功
+  const revealVideo = minElapsed && videoOk;
+
+  // ユーザー操作で強制開始（自動再生ブロック対策）
+  const handleKickstart = async () => {
+    if (videoOk) return;
+    const v = videoRef.current;
+    if (!v) return;
+    try {
+      v.muted = true;
+      await v.play();
+      setVideoOk(true);
+    } catch {
+      // まだダメなら何もしない（次のイベント/再試行を待つ）
+    }
+  };
 
   return (
-    <div id={id} className="relative w-full h-screen overflow-hidden bg-black">
+    <div
+      id={id}
+      className="relative w-full h-screen overflow-hidden bg-black"
+      // どこをタップ/クリックしても再生を試みる
+      onPointerDown={handleKickstart}
+      onTouchStart={handleKickstart}
+    >
       {/* 🎥 背景動画：revealVideo でフェードイン（クロスフェード） */}
       <video
         ref={videoRef}
@@ -75,18 +121,18 @@ export default function HeroSection({
         muted
         playsInline
       >
+        {/* モバイルは軽量版、PCは元動画（必要なら1080pへ変更可能） */}
         <source media="(max-width: 767px)" src="/movies/hero-720.mp4" type="video/mp4" />
         <source media="(min-width: 768px)" src="/movies/12293701_3840_2160_30fps.mp4" type="video/mp4" />
       </video>
 
-      {/* 📜 千客万来：最初は表示 → revealVideoでゆっくりフェードアウト */}
+      {/* 📜 千客万来：revealVideo でゆっくりフェードアウト */}
       {!hideIntro && (
         <motion.div
           initial={{ opacity: 1 }}
           animate={{ opacity: revealVideo ? 0 : 1 }}
-          transition={{ duration: 1.0, ease: "easeOut" }} // フェード時間はお好みで
+          transition={{ duration: 1.0, ease: "easeOut" }}
           onAnimationComplete={() => {
-            // 完全に 0 までフェードしたらDOMから外す（パフォ＆クリック透過）
             if (revealVideo) setHideIntro(true);
           }}
           className="absolute inset-0 flex items-center justify-center bg-black"
@@ -97,8 +143,8 @@ export default function HeroSection({
         </motion.div>
       )}
 
-      {/* 薄い黒オーバーレイ（動画/イントロ共通の雰囲気付け） */}
-      <div className="absolute inset-0 bg-black/30" />
+      {/* 薄い黒オーバーレイ（クリック阻害を避けるため pointer-events 無効） */}
+      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
       {/* 📝 ヒーロー上物 */}
       <div className="relative z-10 h-full flex items-center justify-center px-4 md:px-6 lg:px-8">
