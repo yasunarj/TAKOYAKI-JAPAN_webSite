@@ -65,7 +65,16 @@ export default function HeroSection({
         playsInline
         onError={() => setVideoOk(false)}
       >
-        <source src="/movies/hero-720.mp4" type="video/mp4" />
+        <source
+          media="(max-width: 767px)"
+          src="/movies/hero-720.mp4"
+          type="video/mp4"
+        />
+        <source
+          media="(min-width: 768px)"
+          src="/movies/12293701_3840_2160_30fps.mp4"
+          type="video/mp4"
+        />
       </video>
 
       {/* 薄い黒オーバーレイ */}
