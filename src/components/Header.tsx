@@ -170,7 +170,7 @@ export default function Header({
           className="absolute inset-0 pointer-events-none z-0"
           style={PATTERNS.shippo}
         />
-        <div className="relative flex z-10 items-center justify-between px-4 py-2">
+        <div className="relative flex z-10 items-center justify-between px-4 py-3">
           {/* ロゴ */}
           <motion.div
             className="flex items-end"
