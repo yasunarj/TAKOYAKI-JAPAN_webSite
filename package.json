@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ffmpeg": "^0.0.4",
     "framer-motion": "^12.23.12",
     "next": "15.4.6",
     "next-intl": "^4.3.5",
