@@ -106,7 +106,7 @@ export default function HeroSection({
   return (
     <div
       id={id}
-      className="relative w-full h-screen overflow-hidden bg-black"
+      className="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-black"
       // どこをタップ/クリックしても再生を試みる
       onPointerDown={handleKickstart}
       onTouchStart={handleKickstart}

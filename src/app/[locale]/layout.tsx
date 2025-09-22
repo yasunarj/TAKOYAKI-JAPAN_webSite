@@ -52,9 +52,12 @@ export default async function LocaleLayout({
 
   if (!locales.includes(locale)) notFound();
   const messages = (await import(`@/messages/${locale}.json`)).default;
-
+Ï
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
       {/* 以前の Hydration mismatch を避けるため、class はここ1箇所に統一 */}
       <body className="antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
