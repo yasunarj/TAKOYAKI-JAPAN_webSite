@@ -147,7 +147,7 @@ export default function HeroSection({
       <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
       {/* 📝 ヒーロー上物 */}
-      <div className="relative z-10 h-full flex items-center justify-center px-4 md:px-6 lg:px-8">
+      <div className="relative z-10 h-full flex items-end pb-36 justify-center px-4 md:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto w-full">
           <motion.h1
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-white mb-4 md:mb-6 font-brush"
