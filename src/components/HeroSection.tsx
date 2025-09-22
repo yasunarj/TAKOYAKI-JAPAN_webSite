@@ -58,7 +58,7 @@ export default function HeroSection({
           videoOk ? "opacity-100" : "opacity-0"
         }`}
         poster="/images/splashScreen.jpg"
-        preload="metadata"
+        preload="auto"
         autoPlay
         loop
         muted
