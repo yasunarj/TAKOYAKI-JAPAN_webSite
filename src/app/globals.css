@@ -2,21 +2,21 @@
 @import "tailwindcss";
 
 /* --- Fonts (Google) --- */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;600;700&family=Zen+Old+Mincho:wght@400;500;600;700&family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;600;700&family=Zen+Old+Mincho:wght@400;500;600;700&family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap");
 
 /* --- Design tokens (CSS variables) --- */
 :root {
   --background: #060606;
-  --foreground: #F5F5F5;
+  --foreground: #f5f5f5;
 
   --japanese-red: #5a0012;
-  --japanese-crimson: #B22222;
-  --japanese-gold: #FFD700;
+  --japanese-crimson: #b22222;
+  --japanese-gold: #ffd700;
   --japanese-black: #030303;
   --japanese-black2: #101010;
-  --japanese-white: #F5F5F5;
-  --japanese-gray: #1A1A1A;
-  --japanese-dark-gray: #0A0A0A;
+  --japanese-white: #f5f5f5;
+  --japanese-gray: #1a1a1a;
+  --japanese-dark-gray: #0a0a0a;
 }
 
 /* --- Tailwind v4 tokens (@theme) --- */
@@ -33,11 +33,11 @@
   --color-japanese-dark-gray: var(--japanese-dark-gray);
 
   /* fonts */
-  --font-japanese: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
-  --font-serif-japanese: 'Zen Old Mincho', 'Noto Serif JP', serif;
-  --font-brush: 'Zen Old Mincho', serif;
-  --font-maru: 'Zen Maru Gothic', sans-serif;
-  --font-mincho: var(--font-shippori, 'Noto Serif JP'), serif;
+  --font-japanese: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+  --font-serif-japanese: "Zen Old Mincho", "Noto Serif JP", serif;
+  --font-brush: "Zen Old Mincho", serif;
+  --font-maru: "Zen Maru Gothic", sans-serif;
+  --font-mincho: var(--font-shippori, "Noto Serif JP"), serif;
 }
 
 /* --- Base resets --- */
@@ -47,7 +47,11 @@
   margin: 0;
 } */
 
-*, *::before, *::after { box-sizing: border-box }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html {
   scroll-behavior: smooth;
@@ -86,23 +90,45 @@ body {
 
 /* --- Animations --- */
 @keyframes fadeIn {
-  0% { opacity: 0 }
-  100% { opacity: 1 }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  0% { transform: translateY(20px); opacity: 0 }
-  100% { transform: translateY(0); opacity: 1 }
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideDown {
-  0% { transform: translateY(-20px); opacity: 0 }
-  100% { transform: translateY(0); opacity: 1 }
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes scaleIn {
-  0% { transform: scale(0.9); opacity: 0 }
-  100% { transform: scale(1); opacity: 1 }
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Utility classes for animations */
@@ -132,4 +158,16 @@ body {
   }
 }
 
-
+@supports (-webkit-touch-callout: none) {
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}
