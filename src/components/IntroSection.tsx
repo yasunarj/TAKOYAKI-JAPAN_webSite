@@ -13,7 +13,7 @@ interface IntroSectionProps {
 export default function IntroSection({ id, isActive }: IntroSectionProps) {
   const ref = useRef(null);
   const [showContent, setShowContent] = useState(false);
-  const tIntro = useTranslations('intro');
+  const tIntro = useTranslations("intro");
 
   useEffect(() => {
     console.log("IntroSection isActive:", isActive); // デバッグログ
@@ -30,28 +30,28 @@ export default function IntroSection({ id, isActive }: IntroSectionProps) {
 
   const features = [
     {
-      title: tIntro('features.lantern.title'),
-      description: tIntro('features.lantern.desc')
+      title: tIntro("features.lantern.title"),
+      description: tIntro("features.lantern.desc"),
     },
     {
-      title: tIntro('features.music.title'),
-      description: tIntro('features.music.desc'),
+      title: tIntro("features.music.title"),
+      description: tIntro("features.music.desc"),
     },
     {
-      title: tIntro('features.terrace.title'),
-      description: tIntro('features.terrace.desc'),
+      title: tIntro("features.terrace.title"),
+      description: tIntro("features.terrace.desc"),
     },
     {
-      title: tIntro('features.multilingual.title'),
-      description: tIntro('features.multilingual.desc'),
+      title: tIntro("features.multilingual.title"),
+      description: tIntro("features.multilingual.desc"),
     },
     {
-      title: tIntro('features.payment.title'),
-      description: tIntro('features.payment.desc'),
+      title: tIntro("features.payment.title"),
+      description: tIntro("features.payment.desc"),
     },
     {
-      title: tIntro('features.craftsmanship.title'),
-      description: tIntro('features.craftsmanship.desc'),
+      title: tIntro("features.craftsmanship.title"),
+      description: tIntro("features.craftsmanship.desc"),
     },
   ];
 
@@ -71,7 +71,7 @@ export default function IntroSection({ id, isActive }: IntroSectionProps) {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 font-brush">
-              {tIntro('heading')}
+              {tIntro("heading")}
             </h2>
             <div className="flex justify-center space-x-2 md:space-x-4 mb-4 sm:mb-6 md:mb-8">
               <div className="w-6 sm:w-8 h-1 md:w-16 bg-japanese-red border border-japanese-red"></div>
@@ -79,7 +79,7 @@ export default function IntroSection({ id, isActive }: IntroSectionProps) {
               <div className="w-6 sm:w-8 h-1 md:w-16 bg-japanese-red border border-japanese-red"></div>
             </div>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-japanese-white max-w-3xl mx-auto leading-relaxed px-4">
-              {tIntro('lead_long')}
+              {tIntro("lead_long")}
             </p>
           </motion.div>
 
@@ -120,10 +120,10 @@ export default function IntroSection({ id, isActive }: IntroSectionProps) {
               style={PATTERNS.kikko}
             >
               <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 md:mb-6">
-                {tIntro('atmosphere.heading')}
+                {tIntro("atmosphere.heading")}
               </h3>
               <p className="text-sm sm:text-base md:text-lg text-japanese-white leading-relaxed max-w-4xl mx-auto px-4">
-                {tIntro('atmosphere.body')}
+                {tIntro("atmosphere.body")}
               </p>
             </div>
           </motion.div>

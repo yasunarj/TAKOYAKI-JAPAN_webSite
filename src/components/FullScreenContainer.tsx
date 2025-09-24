@@ -22,9 +22,9 @@ const FullScreenContainer = forwardRef<
   const z = isLeaving ? "z-50" : isActive ? "z-40" : "z-10";
 
   // クリック等は常に現アクティブにのみ通す
-  // const pointer = isActive ? "auto" : "none";
-  // const overflowY = isActive ? "auto" : "hidden";
   const pointer = isActive ? "auto" : "none";
+  const overflowY = isActive ? "auto" : "hidden";
+  // const pointer = isActive ? "auto" : "none";
 
   // フェード時間＆タイミング
   // 去る側：ゆっくり暗転（重なりを作る）
@@ -35,10 +35,10 @@ const FullScreenContainer = forwardRef<
   return (
     <motion.section
       ref={ref}
-      // className={`absolute inset-0 ${z} ${className ?? ""}`}
-      // style={{ pointerEvents: pointer, overflowY }}
       className={`absolute inset-0 ${z} ${className ?? ""}`}
-      style={{ pointerEvents: pointer }}
+      style={{ pointerEvents: pointer, overflowY }}
+      // className={`absolute inset-0 ${z} ${className ?? ""}`}
+      // style={{ pointerEvents: pointer }}
       initial={false}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{
@@ -47,15 +47,15 @@ const FullScreenContainer = forwardRef<
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      {/* <div className="min-h-screen"> */}
-      <div
+      <div className="min-h-screen">
+      {/* <div
         className={
           (isActive
             ? "h-[100dvh] md:h-screen overflow-y-auto overscroll-contain touch-pan-y"
             : "h-[100dvh] md:h-screen overflow-hidden") +
           " -webkit-overflow-scrolling-touch"
         }
-      >
+      > */}
         {children}
       </div>
     </motion.section>
