@@ -152,10 +152,10 @@ export default function HomeClient() {
   };
 
   return (
-    // <div
-    //   className={`relative min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}
-    // >
-    <div className={`relative min-h-[100dvh] md:min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}>
+    <div
+      className={`relative min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}
+    >
+    {/* // <div className={`relative min-h-[100dvh] md:min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}> */}
       {/* スプラッシュ */}
       {showSplash && (
         <SplashScreen
