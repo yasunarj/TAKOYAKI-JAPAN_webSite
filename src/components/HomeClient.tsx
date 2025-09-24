@@ -170,8 +170,8 @@ export default function HomeClient() {
       {splashCompleted && (
         <div className="flex">
           {/* 左：メイン */}
-          {/* <div className="relative h-screen w-full lg:w-4/5"> */}
-          <div className="relative h-[100dvh] md:h-screen w-full lg:w-4/5 overflow-hidden">
+          <div className="relative h-screen w-full lg:w-4/5">
+          {/* <div className="relative h-[100dvh] md:h-screen w-full lg:w-4/5 overflow-hidden"> */}
             {sections.map((section, index) => (
               <FullScreenContainer
                 key={section.id}
