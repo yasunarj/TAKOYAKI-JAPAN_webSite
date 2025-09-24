@@ -14,8 +14,8 @@ export default function HeroSection({
 
   const [showContent, setShowContent] = useState(false);
   const [minElapsed, setMinElapsed] = useState(false); // 「千客万来」最低表示時間
-  const [videoOk, setVideoOk] = useState(false);       // play() 成功
-  const [hideIntro, setHideIntro] = useState(false);   // 千客万来をDOMから外す
+  const [videoOk, setVideoOk] = useState(false); // play() 成功
+  const [hideIntro, setHideIntro] = useState(false); // 千客万来をDOMから外す
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // ヒーロー上物
@@ -122,8 +122,21 @@ export default function HeroSection({
         playsInline
       >
         {/* モバイルは軽量版、PCは元動画（必要なら1080pへ変更可能） */}
-        <source media="(max-width: 767px)" src="/movies/hero-720.mp4" type="video/mp4" />
-        <source media="(min-width: 768px)" src="/movies/12293701_3840_2160_30fps.mp4" type="video/mp4" />
+        <source
+          media="(max-width: 480px)"
+          src="/movies/hero-480.mp4"
+          type="video/mp4"
+        />
+        <source
+          media="(max-width: 767px)"
+          src="/movies/hero-540.mp4"
+          type="video/mp4"
+        />
+        <source
+          media="(min-width: 768px)"
+          src="/movies/12293701_3840_2160_30fps.mp4"
+          type="video/mp4"
+        />
       </video>
 
       {/* 📜 千客万来：revealVideo でゆっくりフェードアウト */}
@@ -166,14 +179,20 @@ export default function HeroSection({
           >
             {tHero("tagline1")}
             <br />
-            <span className="text-japanese-gold font-semibold">{tHero("taglineEm")}</span>
+            <span className="text-japanese-gold font-semibold">
+              {tHero("taglineEm")}
+            </span>
             {tHero("tagline2")}
           </motion.p>
 
           <motion.div
             className="flex justify-center space-x-2 md:space-x-4"
             initial={{ opacity: 0, scaleX: 0 }}
-            animate={showContent ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0 }}
+            animate={
+              showContent
+                ? { opacity: 1, scaleX: 1 }
+                : { opacity: 0, scaleX: 0 }
+            }
             transition={{ duration: 0.6, delay: 1.5 }}
           >
             <div className="w-8 h-1 md:w-16 bg-japanese-red border border-japanese-red" />
