@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const EDGE_WHEEL_THRESHOLD = 320;
-const SWIPE_THRESHOLD = 120;
+const SWIPE_THRESHOLD = 60;
 const COOLDOWN_MS = 700;
 
 const clamp = (n: number, total: number) => Math.max(0, Math.min(n, total - 1));
