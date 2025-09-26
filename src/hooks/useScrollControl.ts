@@ -98,6 +98,12 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
         const atTop = isAtTop(target);
         const atBottom = isAtBottom(target);
 
+        // 端（上端/下端）に到達しているときのバウンド抑止（iOS対策）
+        // 上に引っ張る（dy < 0）かつ上端、または下に引っ張る（dy > 0）かつ下端なら既定のバウンドを防ぐ
+        if ((dy < 0 && atTop) || (dy > 0 && atBottom)) {
+          e.preventDefault();
+        }
+
         if (inCooldown()) return;
 
         if (dy > SWIPE_THRESHOLD && atBottom && index < totalSections - 1) {

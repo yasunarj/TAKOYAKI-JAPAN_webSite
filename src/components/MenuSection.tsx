@@ -53,6 +53,13 @@ export default function MenuSection({ id, isActive, scrollRef }: MenuSectionProp
       id={id}
       ref={scrollRef}
       className="relative w-full h-full bg-japanese-black overflow-y-auto pt-16 lg:pt-0"
+      style={{
+        WebkitOverflowScrolling: "touch",
+        touchAction: "pan-y",
+        overscrollBehavior: "contain",
+        overscrollBehaviorY: "contain",
+        height: "100dvh",
+      }}
     >
       <div className="min-h-full flex flex-col justify-center py-8 sm:py-12 md:py-16 lg:py-12 px-4 sm:px-6 md:px-8">
         <div className="max-w-6xl mx-auto w-full">

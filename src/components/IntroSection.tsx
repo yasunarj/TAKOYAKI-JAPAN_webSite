@@ -68,6 +68,7 @@ export default function IntroSection({ id, isActive, scrollRef }: IntroSectionPr
         WebkitOverflowScrolling: "touch",
         touchAction: "pan-y",
         overscrollBehavior: "contain",
+        overscrollBehaviorY: "contain",
         height: "100dvh",
       }}
     >
