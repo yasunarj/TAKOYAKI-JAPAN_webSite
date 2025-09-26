@@ -23,8 +23,7 @@ const FullScreenContainer = forwardRef<
 
   // クリック等は常に現アクティブにのみ通す
   const pointer = isActive ? "auto" : "none";
-  const overflowY = isActive ? "auto" : "hidden";
-  // const pointer = isActive ? "auto" : "none";
+  // const overflowY = isActive ? "auto" : "hidden";
 
   // フェード時間＆タイミング
   // 去る側：ゆっくり暗転（重なりを作る）

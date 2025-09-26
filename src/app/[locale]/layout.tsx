@@ -64,8 +64,8 @@ export default async function LocaleLayout({
         />
       </head>
       {/* 以前の Hydration mismatch を避けるため、class はここ1箇所に統一 */}
-      <body className="antialiased">
-      {/* <body className="antialiased overscroll-none h-[100dvh] md:h-screen overflow-hidden"> */}
+      {/* <body className="antialiased"> */}
+      <body className="antialiased min-h-[100dvh]">
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
