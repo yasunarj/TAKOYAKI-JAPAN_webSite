@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const EDGE_WHEEL_THRESHOLD = 320;
 const SWIPE_THRESHOLD = 60;
 const COOLDOWN_MS = 700;
+const NEAR_BOTTOM_PX = 24; // 下端近傍許容
 
 const clamp = (n: number, total: number) => Math.max(0, Math.min(n, total - 1));
 type Dir = "up" | "down";
@@ -97,6 +98,9 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
         const dy = touchStartY.current - e.touches[0].clientY;
         const atTop = isAtTop(target);
         const atBottom = isAtBottom(target);
+        const nearBottom =
+          atBottom ||
+          target.scrollHeight - (target.scrollTop + target.clientHeight) <= NEAR_BOTTOM_PX;
 
         // 端（上端/下端）に到達しているときのバウンド抑止（iOS対策）
         // 上に引っ張る（dy < 0）かつ上端、または下に引っ張る（dy > 0）かつ下端なら既定のバウンドを防ぐ
@@ -106,7 +110,7 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
 
         if (inCooldown()) return;
 
-        if (dy > SWIPE_THRESHOLD && atBottom && index < totalSections - 1) {
+        if (dy > SWIPE_THRESHOLD && (nearBottom || index === 0) && index < totalSections - 1) {
           e.preventDefault();
           touchStartY.current = null;
           moveSectionRef.current("down");
