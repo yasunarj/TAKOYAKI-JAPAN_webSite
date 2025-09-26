@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { PATTERNS } from "@/app/styles/patterns";
 import { useTranslations } from "next-intl";
@@ -9,10 +9,10 @@ import { useTranslations } from "next-intl";
 interface AccessSectionProps {
   id: string;
   isActive: boolean;
+  scrollRef?: (el: HTMLElement | null) => void;
 }
 
-export default function AccessSection({ id, isActive }: AccessSectionProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
+export default function AccessSection({ id, isActive, scrollRef }: AccessSectionProps) {
   const [showContent, setShowContent] = useState(false);
   const tAccess = useTranslations("access");
 
@@ -44,7 +44,7 @@ export default function AccessSection({ id, isActive }: AccessSectionProps) {
   return (
     <div
       id={id}
-      ref={ref}
+      ref={scrollRef}
       className="relative w-full h-full bg-japanese-black overflow-y-auto pt-16 lg:pt-0"
     >
       <div className="min-h-full flex flex-col justify-center py-8 sm:py-12 md:py-16 lg:py-12 px-4 sm:px-6 md:px-8">
