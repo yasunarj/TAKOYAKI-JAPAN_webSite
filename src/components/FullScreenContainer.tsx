@@ -52,7 +52,7 @@ const FullScreenContainer = forwardRef<
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      <div className="min-h-screen">
+      <div className="min-h-screen overflow-y-scroll">
       {/* <div
         className={
           (isActive
