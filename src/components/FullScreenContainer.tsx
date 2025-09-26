@@ -36,9 +36,14 @@ const FullScreenContainer = forwardRef<
     <motion.section
       ref={ref}
       className={`absolute inset-0 ${z} ${className ?? ""}`}
-      style={{ pointerEvents: pointer, overflowY }}
-      // className={`absolute inset-0 ${z} ${className ?? ""}`}
-      // style={{ pointerEvents: pointer }}
+      // style={{ pointerEvents: pointer, overflowY }}
+      style={{
+        pointerEvents: pointer,
+        overflowY,
+        WebkitOverflowScrolling: "touch",
+        touchAction: "pan-y",
+        overscrollBehavior: "contain",
+      }}
       initial={false}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{

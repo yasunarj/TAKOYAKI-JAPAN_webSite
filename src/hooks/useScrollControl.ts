@@ -14,9 +14,9 @@ type Dir = "up" | "down";
 export const useScrollControl = (totalSections: number, enabled = true) => {
   const [currentSection, setCurrentSection] = useState(0);
 
-  const containersRef = useRef<(HTMLDivElement | null)[]>([]);
+  const containersRef = useRef<(HTMLElement | null)[]>([]);
   const setContainerRef = useCallback(
-    (index: number) => (el: HTMLDivElement | null) => {
+    (index: number) => (el: HTMLElement | null) => {
       containersRef.current[index] = el;
     },
     []
