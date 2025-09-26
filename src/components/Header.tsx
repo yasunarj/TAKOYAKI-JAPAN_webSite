@@ -35,7 +35,7 @@ export default function Header({
       {/* デスクトップヘッダー */}
       <motion.aside
         aria-hidden
-        className="hidden lg:block fixed top-0 right-0 w-1/5 h-screen z-30 bg-japanese-red border-l border-japanese-red pointer-events-none"
+        className="hidden lg:block fixed top-0 right-0 w-1/5 h-screen z-[55] bg-japanese-red border-l border-japanese-red pointer-events-none"
         initial={{ opacity: 1 }}
         animate={{ opacity: isVisible ? 0 : 1 }}
         transition={{ duration: 0.4, ease: "easeOut", delay: 2 }}
@@ -49,7 +49,7 @@ export default function Header({
       </motion.aside>
 
       <motion.header
-        className="hidden lg:block fixed top-0 right-0 w-1/5 h-screen bg-japanese-dark-gray border-l border-japanese-red z-40"
+        className="hidden lg:block fixed top-0 right-0 w-1/5 h-screen bg-japanese-dark-gray border-l border-japanese-red z-[60]"
         initial={{ x: "100%" }}
         animate={{ x: isVisible ? 0 : "100%" }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 1.5 }}
@@ -160,7 +160,7 @@ export default function Header({
 
       {/* モバイルヘッダー */}
       <motion.header
-        className="lg:hidden fixed top-0 left-0 right-0 bg-japanese-dark-gray border-b border-japanese-red z-40"
+        className="lg:hidden fixed top-0 left-0 right-0 bg-japanese-dark-gray border-b border-japanese-red z-[60]"
         initial={{ y: "-100%" }}
         animate={{ y: isVisible ? 0 : "-100%" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
