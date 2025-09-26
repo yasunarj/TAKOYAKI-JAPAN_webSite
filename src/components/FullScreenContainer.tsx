@@ -35,11 +35,13 @@ const FullScreenContainer = forwardRef<
   return (
     <motion.section
       ref={ref}
-      className={`absolute inset-0 ${z} ${className ?? ""}`}
+      // className={`absolute inset-0 ${z} ${className ?? ""}`}
       // style={{ pointerEvents: pointer, overflowY }}
+      className={`absolute inset-0 ${z} ${className ?? ""}`}
       style={{
         pointerEvents: pointer,
-        overflowY,
+        overflowY: isActive ? "scroll" : "hidden",
+        height: "100dvh",
         WebkitOverflowScrolling: "touch",
         touchAction: "pan-y",
         overscrollBehavior: "contain",
@@ -52,17 +54,10 @@ const FullScreenContainer = forwardRef<
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      <div className="min-h-screen overflow-y-scroll">
-      {/* <div
-        className={
-          (isActive
-            ? "h-[100dvh] md:h-screen overflow-y-auto overscroll-contain touch-pan-y"
-            : "h-[100dvh] md:h-screen overflow-hidden") +
-          " -webkit-overflow-scrolling-touch"
-        }
-      > */}
+      {/* <div className="min-h-screen">
         {children}
-      </div>
+      </div> */}
+      {children}
     </motion.section>
   );
 });

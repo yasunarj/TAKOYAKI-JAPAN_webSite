@@ -152,10 +152,12 @@ export default function HomeClient() {
   };
 
   return (
+    // <div
+    //   className={`relative min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}
+    // >
     <div
-      className={`relative min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}
+      className={`relative min-h-[100dvh] bg-japanese-black lg:overflow-hidden ${shippori.className}`}
     >
-    {/* // <div className={`relative min-h-[100dvh] md:min-h-screen bg-japanese-black overflow-hidden ${shippori.className}`}> */}
       {/* スプラッシュ */}
       {showSplash && (
         <SplashScreen
@@ -170,8 +172,8 @@ export default function HomeClient() {
       {splashCompleted && (
         <div className="flex">
           {/* 左：メイン */}
-          <div className="relative h-screen w-full lg:w-4/5">
-          {/* <div className="relative h-[100dvh] md:h-screen w-full lg:w-4/5 overflow-hidden"> */}
+          {/* <div className="relative h-screen w-full lg:w-4/5"> */}
+          <div className="relative min-h-[100dvh] w-full lg:w-4/5">
             {sections.map((section, index) => (
               <FullScreenContainer
                 key={section.id}
