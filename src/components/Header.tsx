@@ -230,20 +230,17 @@ export default function Header({
           }`}
         >
           <nav className="p-4 border-t border-japanese-gray">
-            <ul className="space-y-2">
+            <ul className="grid grid-cols-4 gap-2">
               {visibleSections.map((section, index) => (
                 <motion.li
                   key={section.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{
-                    opacity: isMobileMenuOpen ? 1 : 0,
-                    x: isMobileMenuOpen ? 0 : -20,
-                  }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: isMobileMenuOpen ? 1 : 0, y: isMobileMenuOpen ? 0 : 8 }}
+                  transition={{ duration: 0.25, delay: index * 0.05 }}
                 >
                   <button
                     type="button"
-                    className="w-full text-left block p-3 rounded-lg transition-all duration-300 text-japanese-white hover:bg-japanese-gray"
+                    className="w-full text-center block px-3 py-3 rounded-lg transition-all duration-300 text-japanese-white hover:bg-japanese-gray border border-japanese-gray/40"
                     onClick={() => {
                       onNavClick?.(
                         sections.findIndex((s) => s.id === section.id)
@@ -251,10 +248,7 @@ export default function Header({
                       setIsMobileMenuOpen(false);
                     }}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{section.label}</span>
-                      <div className="w-2 h-2 bg-white rounded-full" />
-                    </div>
+                    <span className="font-medium text-sm">{section.label}</span>
                   </button>
                 </motion.li>
               ))}
@@ -262,26 +256,28 @@ export default function Header({
 
             {/* モバイル言語切り替え */}
             <div className="mt-4 pt-4 border-t border-japanese-gray">
-              <div className="flex space-x-2">
+              <div className="grid grid-cols-2 gap-2">
                 <Link
-                  href="/"
+                  href="/ja"
                   locale="ja"
-                  className={`px-3 py-1 text-xs rounded ${
+                  className={`text-center px-3 py-2 text-xs rounded ${
                     locale === "ja"
                       ? "bg-japanese-red text-white"
                       : "text-japanese-white hover:bg-japanese-gray"
                   }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   JA
                 </Link>
                 <Link
-                  href="/"
+                  href="/en"
                   locale="en"
-                  className={`px-3 py-1 text-xs rounded ${
+                  className={`text-center px-3 py-2 text-xs rounded ${
                     locale === "en"
                       ? "bg-japanese-red text-white"
                       : "text-japanese-white hover:bg-japanese-gray"
                   }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   EN
                 </Link>
