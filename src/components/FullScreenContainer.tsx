@@ -18,7 +18,7 @@ interface FullScreenContainerProps extends PropsWithChildren {
 const FullScreenContainer = forwardRef<
   HTMLDivElement,
   FullScreenContainerProps
->(({ children, isActive, index, prevIndex, className }, _unusedRef) => {
+>(({ children, isActive, index, prevIndex, className }) => {
   const isLeaving = prevIndex === index && !isActive;
 
   // ★ オーバーラップ中は「去る側」を最前面に
@@ -43,7 +43,7 @@ const FullScreenContainer = forwardRef<
       className={`absolute inset-0 ${z} ${className ?? ""}`}
       style={{
         pointerEvents: pointer,
-        overflowY: "hidden",
+        overflowY: isActive ? "auto" : "hidden",
         height: "100dvh",
         // WebkitOverflowScrolling: "touch",
         // touchAction: "pan-y",
