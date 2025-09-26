@@ -6,9 +6,11 @@ import { useTranslations } from "next-intl";
 export default function HeroSection({
   id,
   isActive,
+  scrollRef,
 }: {
   id: string;
   isActive: boolean;
+  scrollRef?: (el: HTMLElement | null) => void;
 }) {
   const tHero = useTranslations("hero");
 
@@ -106,7 +108,13 @@ export default function HeroSection({
   return (
     <div
       id={id}
-      className="relative w-full h-[100dvh] md:h-screen overflow-hidden bg-black"
+      ref={scrollRef}
+      className="relative w-full h-[100dvh] overflow-y-auto bg-black"
+      style={{
+        WebkitOverflowScrolling: "touch",
+        touchAction: "pan-y",
+        overscrollBehavior: "contain",
+      }}
       // どこをタップ/クリックしても再生を試みる
       onPointerDown={handleKickstart}
       onTouchStart={handleKickstart}
