@@ -15,7 +15,11 @@ import { useScrollControl } from "@/hooks/useScrollControl";
 import { shippori } from "@/app/lib/font";
 import { useTranslations } from "next-intl";
 
-type SectionComponentProps = { id: string; isActive: boolean };
+type SectionComponentProps = {
+  id: string;
+  isActive: boolean;
+  scrollRef?: (el: HTMLElement | null) => void;
+};
 
 type SectionDef = {
   id: "hero" | "intro" | "menu" | "access";
@@ -177,7 +181,7 @@ export default function HomeClient() {
             {sections.map((section, index) => (
               <FullScreenContainer
                 key={section.id}
-                ref={setContainerRef(index)}
+                // ref={setContainerRef(index)}
                 isActive={effectiveCurrentSection === index}
                 index={index}
                 prevIndex={prevIndex}
@@ -185,6 +189,7 @@ export default function HomeClient() {
                 <section.component
                   id={section.id}
                   isActive={effectiveCurrentSection === index}
+                  scrollRef={setContainerRef(index)}
                 />
               </FullScreenContainer>
             ))}

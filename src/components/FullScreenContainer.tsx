@@ -11,10 +11,14 @@ interface FullScreenContainerProps extends PropsWithChildren {
   className?: string;
 }
 
+// const FullScreenContainer = forwardRef<
+//   HTMLDivElement,
+//   FullScreenContainerProps
+// >(({ children, isActive, index, prevIndex, className }, ref) => {
 const FullScreenContainer = forwardRef<
   HTMLDivElement,
   FullScreenContainerProps
->(({ children, isActive, index, prevIndex, className }, ref) => {
+>(({ children, isActive, index, prevIndex, className }, _unusedRef) => {
   const isLeaving = prevIndex === index && !isActive;
 
   // ★ オーバーラップ中は「去る側」を最前面に
@@ -33,17 +37,17 @@ const FullScreenContainer = forwardRef<
 
   return (
     <motion.section
-      ref={ref}
+      // ref={ref}
       // className={`absolute inset-0 ${z} ${className ?? ""}`}
       // style={{ pointerEvents: pointer, overflowY }}
       className={`absolute inset-0 ${z} ${className ?? ""}`}
       style={{
         pointerEvents: pointer,
-        overflowY: isActive ? "scroll" : "hidden",
+        overflowY: "hidden",
         height: "100dvh",
-        WebkitOverflowScrolling: "touch",
-        touchAction: "pan-y",
-        overscrollBehavior: "contain",
+        // WebkitOverflowScrolling: "touch",
+        // touchAction: "pan-y",
+        // overscrollBehavior: "contain",
       }}
       initial={false}
       animate={{ opacity: isActive ? 1 : 0 }}

@@ -8,10 +8,11 @@ import { useTranslations } from "next-intl";
 interface IntroSectionProps {
   id: string;
   isActive: boolean;
+  scrollRef?: (el: HTMLElement | null) => void;
 }
 
-export default function IntroSection({ id, isActive }: IntroSectionProps) {
-  const ref = useRef(null);
+export default function IntroSection({ id, isActive, scrollRef }: IntroSectionProps) {
+  const localRef = useRef<HTMLDivElement | null>(null);
   const [showContent, setShowContent] = useState(false);
   const tIntro = useTranslations("intro");
 
@@ -56,15 +57,19 @@ export default function IntroSection({ id, isActive }: IntroSectionProps) {
   ];
 
   return (
-    // <div
-    //   id={id}
-    //   ref={ref}
-    //   className="relative w-full h-full bg-japanese-black overflow-y-auto pt-16 lg:pt-0"
-    // >
     <div
       id={id}
-      ref={ref}
-      className="relative w-full min-h-full bg-japanese-black pt-16 lg:pt-0"
+      ref={(el) => {
+        localRef.current = el;
+        scrollRef?.(el as HTMLElement | null);
+      }}
+      className="relative w-full min-h-full bg-japanese-black pt-16 lg:pt-0 overflow-y-auto"
+      style={{
+        WebkitOverflowScrolling: "touch",
+        touchAction: "pan-y",
+        overscrollBehavior: "contain",
+        height: "100dvh",
+      }}
     >
       <div className="min-h-full flex flex-col justify-center py-8 sm:py-12 md:py-16 lg:py-12 px-4 sm:px-6 md:px-8">
         <div className="max-w-6xl mx-auto w-full">
