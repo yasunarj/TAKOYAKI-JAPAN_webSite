@@ -21,9 +21,8 @@ const FullScreenContainer = forwardRef<
 >(({ children, isActive, index, prevIndex, className }, ref) => {
   const isLeaving = prevIndex === index && !isActive;
 
-  // ★ オーバーラップ中は「去る側」を最前面に
-  //    そうすると下で「新しいセクション」が浮かび上がるのが透けて見える
-  const z = isLeaving ? "z-50" : isActive ? "z-40" : "z-10";
+  // 入る側を最前面にして、iOS のタッチ阻害を回避
+  const z = isActive ? "z-50" : isLeaving ? "z-40" : "z-10";
 
   // クリック等は常に現アクティブにのみ通す
   const pointer = isActive ? "auto" : "none";
@@ -45,10 +44,11 @@ const FullScreenContainer = forwardRef<
         pointerEvents: pointer,
         overflowY: "hidden",
         height: "100dvh",
-        // WebkitOverflowScrolling: "touch",
-        // touchAction: "pan-y",
-        // overscrollBehavior: "contain",
+        touchAction: "pan-y",
+        // iOS のヒットテスト回避：非アクティブは不可視
+        visibility: isActive || isLeaving ? "visible" : "hidden",
       }}
+      aria-hidden={isActive ? false : true}
       initial={false}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{

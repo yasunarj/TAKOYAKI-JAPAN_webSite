@@ -122,7 +122,7 @@ export default function HeroSection({
       {/* 🎥 背景動画：revealVideo でフェードイン（クロスフェード） */}
       <video
         ref={videoRef}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 pointer-events-none
           ${revealVideo ? "opacity-100" : "opacity-0"}`}
         preload="metadata"
         loop
