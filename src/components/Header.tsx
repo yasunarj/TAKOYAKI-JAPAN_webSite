@@ -203,7 +203,7 @@ export default function Header({
               <span
                 className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
                   isMobileMenuOpen
-                    ? "rotate-45 translate-y-1"
+                    ? "rotate-45 translate-y-0.5"
                     : "-translate-y-1"
                 }`}
               ></span>
@@ -215,7 +215,7 @@ export default function Header({
               <span
                 className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
                   isMobileMenuOpen
-                    ? "-rotate-45 -translate-y-1"
+                    ? "-rotate-45 -translate-y-0.5"
                     : "translate-y-1"
                 }`}
               ></span>
@@ -230,7 +230,7 @@ export default function Header({
           }`}
         >
           <nav className="p-4 border-t border-japanese-gray">
-            <ul className="grid grid-cols-4 gap-2">
+            <ul className="grid grid-cols-4 gap-1">
               {visibleSections.map((section, index) => (
                 <motion.li
                   key={section.id}
