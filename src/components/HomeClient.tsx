@@ -21,15 +21,19 @@ type SectionComponentProps = {
   scrollRef?: (el: HTMLElement | null) => void;
 };
 
+type SectionId = "hero" | "intro" | "menu" | "access";
+
 type SectionDef = {
-  id: "hero" | "intro" | "menu" | "access";
+  id: SectionId;
   label: string;
   component: ComponentType<SectionComponentProps>;
+  preview: React.ReactNode;
 };
 
 export default function HomeClient() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [splashCompleted, setSplashCompleted] = useState(false);
+  // const [showSplash, setShowSplash] = useState(true);
+  // const [splashCompleted, setSplashCompleted] = useState(false);
+  const [isSplashDone, setIsSplashDone] = useState<boolean>(false);
   const tNav = useTranslations("nav");
   const tPrev = useTranslations("preview");
 
@@ -138,18 +142,24 @@ export default function HomeClient() {
 
   const totalSections = sections.length;
   const { currentSection, goToSection, setContainerRef, prevIndex } =
-    useScrollControl(totalSections, splashCompleted);
+    useScrollControl(totalSections, isSplashDone);
 
-  const effectiveCurrentSection = splashCompleted ? currentSection : 0;
+  const effectiveCurrentSection = isSplashDone ? currentSection : 0;
 
   // 訪問済みIDの収集
-  const [visited, setVisited] = useState<string[]>([]);
+  const [visitedSet, setVisitedSet] = useState<Set<string>>(new Set());
+  const visited = useMemo(() => Array.from(visitedSet), [visitedSet]);
+  console.log(visited);
+
+  const id = useMemo(
+    () => sections[effectiveCurrentSection]?.id,
+    [sections, effectiveCurrentSection]
+  );
 
   useEffect(() => {
-    if (!splashCompleted) return;
-    const id = sections[effectiveCurrentSection].id;
-    setVisited((prev) => (prev.includes(id) ? prev : [...prev, id]));
-  }, [splashCompleted, effectiveCurrentSection, sections]);
+    if (!isSplashDone || !id) return;
+    setVisitedSet((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
+  }, [isSplashDone, id]);
 
   const handleNavClick = (index: number) => {
     goToSection(index); // 直接セクション番号を切り替え（scrollIntoView は hook 側で実行）
@@ -160,17 +170,16 @@ export default function HomeClient() {
       className={`relative min-h-[100dvh] bg-japanese-black lg:overflow-hidden ${shippori.className}`}
     >
       {/* スプラッシュ */}
-      {showSplash && (
-        <SplashScreen
+      {!isSplashDone && (
+        <SplashScreen 
           onComplete={() => {
-            setSplashCompleted(true);
-            setShowSplash(false);
+            setIsSplashDone(true);
           }}
         />
       )}
 
       {/* 本体 */}
-      {splashCompleted && (
+      {isSplashDone && (
         <div className="flex">
           {/* 左：メイン */}
           <div className="relative min-h-[100dvh] w-full lg:w-4/5">
@@ -192,7 +201,7 @@ export default function HomeClient() {
 
           {/* 右：ヘッダー */}
           <Header
-            isVisible={splashCompleted}
+            isVisible={isSplashDone}
             sections={sections.map(({ id, label }) => ({ id, label }))}
             completedSections={visited}
             onNavClick={handleNavClick}
@@ -201,7 +210,7 @@ export default function HomeClient() {
       )}
 
       {/* スクロールインジケーター（PC） */}
-      {splashCompleted && (
+      {isSplashDone && (
         <ScrollIndicator
           currentSection={effectiveCurrentSection}
           sections={sections}
@@ -211,7 +220,7 @@ export default function HomeClient() {
       )}
 
       {/* スクロールインジケーター（モバイル） */}
-      {splashCompleted && (
+      {isSplashDone && (
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 lg:hidden">
           <div className="flex space-x-2">
             {Array.from({ length: totalSections }).map((_, index) => {
@@ -222,10 +231,13 @@ export default function HomeClient() {
                 <button
                   key={index}
                   aria-label={`Go to section ${index + 1}`}
+                  aria-disabled={!canNavigate}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     effectiveCurrentSection === index
                       ? "bg-japanese-red scale-125"
-                      : "bg-japanese-white/30"
+                      : `bg-japanese-white/30 ${
+                          !canNavigate ? "opacity-50 pointer-events-none" : ""
+                        }`
                   }`}
                   onClick={() => canNavigate && handleNavClick(index)}
                 />

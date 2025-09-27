@@ -26,7 +26,7 @@ export default function ScrollIndicator({
 
   return (
     <motion.div
-      className="fixed right-[2.2%] -bottom-3 transform -translate-y-1/2 z-50 hidden lg:block
+      className="fixed right-[2.2%] -bottom-3 transform -translate-y-1/2 z-[60] hidden lg:block
     [@media(max-height:700px)]:right-[2.2%]
     [@media(max-height:700px)]:bottom-1.5
     [@media(max-height:500px)]:hidden
