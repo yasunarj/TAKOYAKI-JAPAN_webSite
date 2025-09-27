@@ -158,7 +158,7 @@ export default function HeroSection({
           }}
           className="absolute inset-0 flex items-center justify-center bg-black"
         >
-          <div className="text-white font-bold tracking-widest [writing-mode:vertical-rl] [text-orientation:upright] text-[128px] xl:text-[168px] 2xl:text-[200px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] leading-[1.8]">
+          <div className="text-white font-bold tracking-widest [writing-mode:vertical-rl] [text-orientation:upright] text-[128px] xl:text-[168px] 2xl:text-[200px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] leading-[1.8] mt-10">
             千客万来
           </div>
         </motion.div>
