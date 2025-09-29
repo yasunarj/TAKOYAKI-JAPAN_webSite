@@ -7,7 +7,7 @@ const EDGE_WHEEL_THRESHOLD = 320;
 const SWIPE_THRESHOLD = 60;
 const COOLDOWN_MS = 700;
 const NEAR_BOTTOM_PX = 24; // 下端近傍許容
-const FREEZE_MS = 600;
+const FREEZE_MS = 800;
 
 const clamp = (n: number, total: number) => Math.max(0, Math.min(n, total - 1));
 type Dir = "up" | "down";
