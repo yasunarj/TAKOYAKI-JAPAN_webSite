@@ -7,6 +7,7 @@ const EDGE_WHEEL_THRESHOLD = 320;
 const SWIPE_THRESHOLD = 60;
 const COOLDOWN_MS = 700;
 const NEAR_BOTTOM_PX = 24; // 下端近傍許容
+const FREEZE_MS = 600;
 
 const clamp = (n: number, total: number) => Math.max(0, Math.min(n, total - 1));
 type Dir = "up" | "down";
@@ -22,6 +23,10 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
 
   // 要素ごとのクリーンアップ関数を保持（同じ要素に二重張りしない）
   const boundMapRef = useRef<WeakMap<HTMLElement, () => void>>(new WeakMap());
+
+  // セクションが変わったタイミングで一時的にスクロールを停止（セクションの構築後に移動許可）
+const inputLockedUntil = useRef(0);
+const inInputLock = () => Date.now() < inputLockedUntil.current;
 
   // スワイプ等の内部状態
   const touchStartY = useRef<number | null>(null);
@@ -57,16 +62,16 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
         const target = containersRef.current[index];
         if (!target) return;
 
-        const dy = e.deltaY;
-        const atTop = isAtTop(target);
-        const atBottom = isAtBottom(target);
+        const dy = e.deltaY; //dyは指の移動量 +は上、-は下判定
+        const atTop = isAtTop(target); //atTopは上端であるかどうか
+        const atBottom = isAtBottom(target); //atBottomは下端であるかどうか
 
         if ((!atTop && dy < 0) || (!atBottom && dy > 0)) {
           edgeIntent.current = { index: null, dir: null, acc: 0 };
           return;
-        }
+        } 
 
-        if (dy > 0 && atBottom && index < totalSections - 1) {
+        if (dy> 0 && atBottom && index < totalSections - 1) {
           e.preventDefault();
           if (inCooldown()) return;
           const same = edgeIntent.current.index === index && edgeIntent.current.dir === "down";
@@ -88,10 +93,18 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
       };
 
       const onTouchStart = (e: TouchEvent) => {
+        if (inInputLock()) {
+          e.preventDefault();
+          return;
+        }
         touchStartY.current = e.touches[0].clientY;
       };
 
       const onTouchMove = (e: TouchEvent) => {
+        if (inInputLock()) {
+          e.preventDefault();
+          return;
+        }
         const target = containersRef.current[index];
         if (!target || touchStartY.current === null) return;
 
@@ -179,6 +192,11 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
   const goToSection = useCallback(
     (index: number) => {
       const i = clamp(index, totalSections);
+
+      inputLockedUntil.current = Date.now() + FREEZE_MS;
+      touchStartY.current = null;
+      edgeIntent.current = { index: null, dir: null, acc: 0 }
+
       setPrevIndex(currentIndexRef.current);
 
       const el = containersRef.current[i];
@@ -201,6 +219,10 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
     (dir: Dir) => {
       const prev = currentIndexRef.current;
       const next = clamp(prev + (dir === "down" ? 1 : -1), totalSections);
+
+      inputLockedUntil.current = Date.now() + FREEZE_MS;
+      touchStartY.current = null;
+      edgeIntent.current = { index: null, dir: null, acc: 0 };
 
       setPrevIndex(prev);
 
@@ -243,3 +265,7 @@ export const useScrollControl = (totalSections: number, enabled = true) => {
 
   return { currentSection, direction, goToSection, setContainerRef, prevIndex };
 };
+
+
+
+
