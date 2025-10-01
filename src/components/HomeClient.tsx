@@ -31,8 +31,6 @@ type SectionDef = {
 };
 
 export default function HomeClient() {
-  // const [showSplash, setShowSplash] = useState(true);
-  // const [splashCompleted, setSplashCompleted] = useState(false);
   const [isSplashDone, setIsSplashDone] = useState<boolean>(false);
   const tNav = useTranslations("nav");
   const tPrev = useTranslations("preview");
@@ -149,7 +147,6 @@ export default function HomeClient() {
   // 訪問済みIDの収集
   const [visitedSet, setVisitedSet] = useState<Set<string>>(new Set());
   const visited = useMemo(() => Array.from(visitedSet), [visitedSet]);
-  console.log(visited);
 
   const id = useMemo(
     () => sections[effectiveCurrentSection]?.id,

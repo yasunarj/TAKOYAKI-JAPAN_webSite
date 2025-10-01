@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function HeroSection({
   id,
@@ -13,11 +14,12 @@ export default function HeroSection({
   scrollRef?: (el: HTMLElement | null) => void;
 }) {
   const tHero = useTranslations("hero");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const [showContent, setShowContent] = useState(false);
   const [minElapsed, setMinElapsed] = useState(false); // 「千客万来」最低表示時間
   const [videoOk, setVideoOk] = useState(false); // play() 成功
-  const [hideIntro, setHideIntro] = useState(false); // 千客万来をDOMから外す
+  const [hideIntro, setHideIntro] = useState(() => typeof window !== "undefined" ? window.matchMedia("(min-width: 1024px").matches : false); // 千客万来をDOMから外す
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // ヒーロー上物
@@ -31,9 +33,15 @@ export default function HeroSection({
 
   // 最低1.6秒は「千客万来」を見せる
   useEffect(() => {
+    if (isDesktop) {
+      setMinElapsed(true);
+      setHideIntro(true);
+      return;
+    }
+
     const t = setTimeout(() => setMinElapsed(true), 1600);
     return () => clearTimeout(t);
-  }, []);
+  }, [isDesktop]);
 
   // 動画の再生試行（イベント/タイムアウト/ユーザー操作で再試行）
   useEffect(() => {
@@ -148,7 +156,7 @@ export default function HeroSection({
       </video>
 
       {/* 📜 千客万来：revealVideo でゆっくりフェードアウト */}
-      {!hideIntro && (
+      {!hideIntro && !isDesktop && (
         <motion.div
           initial={{ opacity: 1 }}
           animate={{ opacity: revealVideo ? 0 : 1 }}
@@ -156,7 +164,7 @@ export default function HeroSection({
           onAnimationComplete={() => {
             if (revealVideo) setHideIntro(true);
           }}
-          className="absolute inset-0 flex items-center justify-center bg-black"
+          className="absolute inset-0 flex items-center justify-center bg-black lg:hidden"
         >
           <div className="text-white font-bold tracking-widest [writing-mode:vertical-rl] [text-orientation:upright] text-[128px] xl:text-[168px] 2xl:text-[200px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] leading-[1.8] mt-10">
             千客万来

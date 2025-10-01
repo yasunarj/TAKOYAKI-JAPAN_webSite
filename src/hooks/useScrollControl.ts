@@ -59,6 +59,10 @@ const inInputLock = () => Date.now() < inputLockedUntil.current;
 
       // ハンドラは index を閉じ込め、動的値は useRef を参照
       const onWheel = (e: WheelEvent) => {
+        if(inInputLock()) {
+          e.preventDefault();
+          return;
+        }
         const target = containersRef.current[index];
         if (!target) return;
 
@@ -253,10 +257,13 @@ const inInputLock = () => Date.now() < inputLockedUntil.current;
 
   // アンマウント時の全クリーンアップ
   useEffect(() => {
+    const els = containersRef.current;
+    const boundMap = boundMapRef.current;
+
     return () => {
-      containersRef.current.forEach((el) => {
+      els.forEach((el) => {
         if (!el) return;
-        const disposer = boundMapRef.current.get(el);
+        const disposer = boundMap.get(el);
         disposer?.();
       });
       boundMapRef.current = new WeakMap();

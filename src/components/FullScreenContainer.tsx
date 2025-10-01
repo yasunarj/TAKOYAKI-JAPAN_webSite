@@ -11,10 +11,6 @@ interface FullScreenContainerProps extends PropsWithChildren {
   className?: string;
 }
 
-// const FullScreenContainer = forwardRef<
-//   HTMLDivElement,
-//   FullScreenContainerProps
-// >(({ children, isActive, index, prevIndex, className }, ref) => {
 const FullScreenContainer = forwardRef<
   HTMLDivElement,
   FullScreenContainerProps
@@ -26,7 +22,6 @@ const FullScreenContainer = forwardRef<
 
   // クリック等は常に現アクティブにのみ通す
   const pointer = isActive ? "auto" : "none";
-  // const overflowY = isActive ? "auto" : "hidden";
 
   // フェード時間＆タイミング
   // 去る側：ゆっくり暗転（重なりを作る）
@@ -37,8 +32,6 @@ const FullScreenContainer = forwardRef<
   return (
     <motion.section
       ref={ref}
-      // className={`absolute inset-0 ${z} ${className ?? ""}`}
-      // style={{ pointerEvents: pointer, overflowY }}
       className={`absolute inset-0 ${z} ${className ?? ""}`}
       style={{
         pointerEvents: pointer,
@@ -57,9 +50,6 @@ const FullScreenContainer = forwardRef<
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      {/* <div className="min-h-screen">
-        {children}
-      </div> */}
       {children}
     </motion.section>
   );
