@@ -153,6 +153,17 @@ export default function Header({
               >
                 EN
               </Link>
+              <Link
+                href="/es"
+                locale="es"
+                className={`px-3 py-1 text-xs rounded ${
+                  locale === "es"
+                    ? "bg-japanese-red text-white"
+                    : "text-japanese-white hover:bg-japanese-gray"
+                }`}
+              >
+                ES
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -235,7 +246,10 @@ export default function Header({
                 <motion.li
                   key={section.id}
                   initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: isMobileMenuOpen ? 1 : 0, y: isMobileMenuOpen ? 0 : 8 }}
+                  animate={{
+                    opacity: isMobileMenuOpen ? 1 : 0,
+                    y: isMobileMenuOpen ? 0 : 8,
+                  }}
                   transition={{ duration: 0.25, delay: index * 0.05 }}
                 >
                   <button
@@ -256,7 +270,7 @@ export default function Header({
 
             {/* モバイル言語切り替え */}
             <div className="mt-4 pt-4 border-t border-japanese-gray">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 <Link
                   href="/ja"
                   locale="ja"
@@ -280,6 +294,18 @@ export default function Header({
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   EN
+                </Link>
+                <Link
+                  href="/es"
+                  locale="es"
+                  className={`text-center px-3 py-2 text-xs rounded ${
+                    locale === "es"
+                      ? "bg-japanese-red text-white"
+                      : "text-japanese-white hover:bg-japanese-gray"
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  ES
                 </Link>
               </div>
             </div>

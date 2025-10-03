@@ -1,0 +1,172 @@
+{
+  "home": { "title": "Bienvenido" },
+  "brand": "TAKOYAKI JAPAN",
+
+  "splash": {
+    "bg_alt": "Imagen de fondo de la pantalla de inicio",
+    "logo_alt": "Logotipo de TAKOYAKI JAPAN",
+    "subtitle": "Tienda tradicional de takoyaki en Nikkō",
+    "loading_aria": "Cargando..."
+  },
+
+  "nav": {
+    "hero": "Inicio",
+    "intro": "Sobre nosotros",
+    "menu": "Menú",
+    "access": "Acceso"
+  },
+
+  "preview": {
+    "hero": {
+      "alt": "Imagen de vista previa de la sección principal",
+      "lines": {
+        "background": "Fondo de la tienda",
+        "catchcopy": "Eslogan"
+      }
+    },
+    "intro": {
+      "alt": "Imagen de vista previa de la sección de presentación",
+      "lines": {
+        "features": "Características del local",
+        "atmosphere": "Ambiente del interior"
+      }
+    },
+    "menu": {
+      "alt": "Imagen de vista previa de la sección del menú",
+      "item": "Takoyaki de Nikkō",
+      "price_label": "¥{price}"
+    },
+    "access": {
+      "alt": "Imagen de vista previa de la sección de acceso",
+      "address": "栃木県日光市下鉢石町795-1",
+      "hours_label": "Horario {open}-{close}"
+    }
+  },
+
+  "hero": {
+    "titleTop": "TAKOYAKI",
+    "titleBottom": "JAPAN",
+    "tagline1": "El sabor tradicional de Nikkō,",
+    "taglineEm": "elaborado con esmero,",
+    "tagline2": "te lo llevamos."
+  },
+
+  "intro": {
+    "heading": "Sobre la tienda",
+    "lead_long": "Rodeados por la hermosa naturaleza de Nikkō, combinamos los sabores tradicionales de Japón con un servicio moderno para ofrecerte una experiencia especial de takoyaki.",
+    "features": {
+      "lantern": {
+        "title": "Farolillos rojos tradicionales",
+        "desc": "Farolillos rojos alinean la entrada y crean un ambiente japonés auténtico. Por la noche brillan con calidez, dando la bienvenida a cada visitante."
+      },
+      "music": {
+        "title": "Música relajante",
+        "desc": "Suena música tradicional japonesa en el local, para que disfrutes tu comida en un espacio tranquilo."
+      },
+      "terrace": {
+        "title": "Terraza abierta",
+        "desc": "Disfruta del aire fresco y la luz del sol en nuestra terraza abierta, sintiendo la belleza de Nikkō durante las estaciones."
+      },
+      "multilingual": {
+        "title": "Atención multilingüe",
+        "desc": "Disponemos de menú en inglés para que los visitantes del extranjero puedan pedir con confianza."
+      },
+      "payment": {
+        "title": "Múltiples métodos de pago",
+        "desc": "Efectivo, tarjetas de crédito, dinero electrónico y pagos QR: elige lo que te resulte más cómodo."
+      },
+      "craftsmanship": {
+        "title": "Artesanía",
+        "desc": "Cada takoyaki se cocina con esmero por artesanos expertos para lograr un sabor auténtico."
+      }
+    },
+    "atmosphere": {
+      "heading": "Donde la tradición se encuentra con el presente",
+      "body": "Nikkō es conocida por su rica historia y sus sitios Patrimonio de la Humanidad. Valoramos esa atmósfera tradicional a la vez que ofrecemos servicios adaptados a las necesidades actuales. Relájate y disfruta de takoyaki auténtico en un espacio cómodo."
+    }
+  },
+
+  "menu": {
+    "heading": "Menú",
+    "lead_long": "Disfruta de takoyaki auténtico elaborado con ingredientes locales frescos y verdadera artesanía.",
+
+    "featured": {
+      "image_alt": "Takoyaki especial de Nikkō",
+      "badge_popular": "Más vendido",
+
+      "name": "Takoyaki especial de Nikkō",
+      "description": "Nuestro takoyaki insignia elaborado con ingredientes frescos de Nikkō. Sazonado con tare secreto y salsa especial: crujiente por fuera y esponjoso por dentro.",
+      "price_label": "¥{price}",
+
+      "features_heading": "Puntos destacados",
+      "features": {
+        "f1": "Crujiente por fuera, esponjoso por dentro",
+        "f2": "Salsa secreta",
+        "f3": "Ingredientes locales de Nikkō",
+        "f4": "Artesanía"
+      },
+
+      "ingredients_heading": "Ingredientes",
+      "ingredients": {
+        "i1": "Pulpo fresco",
+        "i2": "Verduras de Nikkō",
+        "i3": "Tare secreto",
+        "i4": "Salsa especial"
+      },
+
+      "order_cta": "Pedir ahora"
+    },
+
+    "more": {
+      "lead": "También ofrecemos muchos otros platos.",
+      "all_menu_cta": "Ver todo el menú"
+    }
+  },
+
+  "access": {
+    "heading": "Acceso e información de la tienda",
+    "lead": "Estamos situados a poca distancia de los principales puntos turísticos de Nikkō.\nNo dudes en visitarnos.",
+    "image_alt_store": "Exterior de la tienda",
+    "map_title": "Cómo llegar a la tienda",
+
+    "basic": {
+      "heading": "Información básica",
+      "address_label": "Dirección",
+      "phone_label": "Teléfono",
+      "hours_label": "Horario",
+      "hours_weekdays": "Días laborables: {hours}",
+      "hours_weekends": "Fines de semana y festivos: {hours}",
+
+      "address_value": "栃木県日光市下鉢石町795-1",
+      "phone_value": "07014115588",
+      "hours_weekdays_value": "11:00 - 21:00",
+      "hours_weekends_value": "10:00 - 22:00"
+    },
+
+    "methods": {
+      "heading": "Cómo llegar",
+      "train_label": "Tren",
+      "bus_label": "Autobús",
+      "car_label": "Coche",
+      "train": "A 10 min a pie de la estación JR Nikkō",
+      "bus": "A 5 min desde la parada de autobús de la estación de Nikkō",
+      "car": "A 10 min en coche desde Nikkō IC"
+    },
+
+    "contact": {
+      "heading": "No dudes en contactarnos",
+      "lead": "Para reservas o consultas, llámanos o acércate a la tienda. Te esperamos con gusto.",
+      "call_cta": "Llámanos"
+    },
+
+    "payments": {
+      "heading": "Métodos de pago",
+      "methods": {
+        "cash": "Efectivo",
+        "credit_card": "Tarjeta de crédito",
+        "e_money": "Dinero electrónico",
+        "qr": "Pago con código QR"
+      }
+    }
+  }
+}
